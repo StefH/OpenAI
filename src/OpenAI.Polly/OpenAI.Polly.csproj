@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.0.1-preview-01</Version>
+    <PackageId>OpenAI.Polly</PackageId>
+    <RootNamespace>OpenAI_API</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>11</LangVersion>
+    <Authors>Stef Heyenrath</Authors>
+    <Product>OpenAI API Polly Extensions</Product>
+    <Description>'WithRetry' extensions for OpenAI API to handle 'Rate limit reached' exceptions using Polly.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/StefH/OpenAI</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/StefH/OpenAI</RepositoryUrl>
+    <PackageTags>OpenAI, AI, ML, API, Chat, ChatGPT, Embeddings, Polly, Retry, RetryAsync, Rate limit, TooManyRequests</PackageTags>
+    <Title>OpenAI API Polly Extensions</Title>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>nuget_logo.png</PackageIcon>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="nuget_logo.png" Pack="true" PackagePath="\" />
+    <None Include="PackageReadme.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Polly" Version="7.2.3" />
+  </ItemGroup>
+
+</Project>
