@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Polly;
 
@@ -69,16 +70,42 @@ public static class OpenAIAPIExtensions
     }
 
     /// <summary>
-    /// Executes a given synchronous function with retry logic, handling rate limits for the OpenAI API.
+    /// Executes a given asynchronous function with retry logic, handling rate limits for the OpenAI API.
     /// </summary>
     /// <typeparam name="TResult">The type of the result returned by the function.</typeparam>
     /// <typeparam name="TInstance">The type of the instance on which the function is executed.</typeparam>
     /// <param name="instance">The instance on which the function is executed.</param>
+    /// <param name="func">The asynchronous function to be executed with retry logic.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public static Task<TResult> WithRetry<TResult, TInstance>(this TInstance instance, Func<TInstance, CancellationToken, Task<TResult>> func, CancellationToken cancellationToken) where TInstance : class
+    {
+        return AsyncRetryPolicy.ExecuteAsync(ct => func(instance, ct), cancellationToken);
+    }
+
+    /// <summary>
+    /// Executes a given synchronous function with retry logic, handling rate limits for the OpenAI API.
+    /// </summary>
+    /// <typeparam name="TInstance">The type of the instance on which the function is executed.</typeparam>
+    /// <param name="instance">The instance on which the function is executed.</param>
     /// <param name="func">The synchronous function to be executed with retry logic.</param>
-    /// <returns>The result of the function execution.</returns>
-    public static TResult WithRetry<TResult, TInstance>(this TInstance instance, Func<TInstance, TResult> func) where TInstance : class
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public static Task WithRetry<TInstance>(this TInstance instance, Func<TInstance, Task> func) where TInstance : class
     {
         return RetryPolicy.Execute(() => func(instance));
+    }
+
+    /// <summary>
+    /// Executes a given synchronous function with retry logic, handling rate limits for the OpenAI API.
+    /// </summary>
+    /// <typeparam name="TInstance">The type of the instance on which the function is executed.</typeparam>
+    /// <param name="instance">The instance on which the function is executed.</param>
+    /// <param name="func">The synchronous function to be executed with retry logic.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public static Task WithRetry<TInstance>(this TInstance instance, Func<TInstance, CancellationToken, Task> func, CancellationToken cancellationToken) where TInstance : class
+    {
+        return AsyncRetryPolicy.ExecuteAsync(ct => func(instance, ct), cancellationToken);
     }
 
     /// <summary>
