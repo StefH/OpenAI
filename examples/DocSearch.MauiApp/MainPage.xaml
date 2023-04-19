@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DocSearch.MauiApp.MainPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="10,10">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="440" />
+                    <RowDefinition Height="440" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="440" />
+                    <ColumnDefinition Width="440" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+
+                <Editor Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        x:Name="txtPrompt" 
+                        Text="temple in ruines, forest, stairs, columns, cinematic, detailed, atmospheric, epic, concept art, Matte painting, background, mist, photo-realistic, concept art, volumetric light, cinematic epic + rule of thirds octane render, 8k, corona render, movie concept art, octane render, cinematic, trending on artstation, movie concept art, cinematic composition , ultra-detailed, realistic , hyper-realistic , volumetric lighting, 8k –ar 2:3 –test –uplight" />
+
+                <Button Grid.Column="2"
+                        x:Name="btnGenerate"
+                        Text="Generate"
+                        VerticalOptions="End"
+                        Clicked="OnGenerateClicked" />
+
+                <Border Grid.Row="1" Grid.Column="0"
+                        Stroke="black"
+                        WidthRequest="430"
+                        HeightRequest="430"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        StrokeThickness="0.25">
+                    <Image x:Name="picture0" Aspect="Center" />
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1"
+                        Stroke="black"
+                        WidthRequest="430"
+                        HeightRequest="430"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        StrokeThickness="0.25">
+                    <Image x:Name="picture1" Aspect="Center" />
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="0"
+                        Stroke="black"
+                        WidthRequest="430"
+                        HeightRequest="430"
+                        HorizontalOptions="Start"
+                        VerticalOptions="End"
+                        StrokeThickness="0.25">
+                    <Image x:Name="picture2" Aspect="Center" />
+                </Border>
+
+                <Border Grid.Row="2" Grid.Column="1"
+                        Stroke="black"
+                        WidthRequest="430"
+                        HeightRequest="430"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"
+                        StrokeThickness="0.25">
+                    <Image x:Name="picture3" Aspect="Center" />
+                </Border>
+
+                <Button Grid.Row="2" Grid.Column="2"
+                        VerticalOptions="End"
+                        x:Name="btnSaveAll"
+                        Text="Save All"
+                        Clicked="OnSaveAllClicked" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
