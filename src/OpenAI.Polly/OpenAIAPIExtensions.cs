@@ -16,12 +16,12 @@ public static class OpenAIAPIExtensions
 {
     private const int DefaultTimeOutInSeconds = 1;
     private const int MaxRetries = 5;
-    private static readonly string RateLimitReachedMessage = "Rate limit reached".ToUpperInvariant();
-    private static readonly Regex Regex = new(@"Please try again in (\d+)s\.", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+    private static readonly Regex RateLimitReachedRegex = new("Rate limit reached", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    private static readonly Regex PleaseTryAgainRegex = new(@"Please try again in (\d+)s\.", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     private static bool TryExtractWaitSecondsFromExceptionMessage(string exceptionMessage, out int waitSeconds)
     {
-        var match = Regex.Match(exceptionMessage);
+        var match = PleaseTryAgainRegex.Match(exceptionMessage);
         if (match.Success && int.TryParse(match.Groups[1].Value, out var parsedValue))
         {
             waitSeconds = parsedValue;
@@ -33,12 +33,17 @@ public static class OpenAIAPIExtensions
     }
 
     private static readonly AsyncPolicy AsyncRetryPolicy = Policy
-        .Handle<HttpRequestException>(ex => ex.Message.ToUpperInvariant().Contains(RateLimitReachedMessage))
+        .Handle<HttpRequestException>(IsRateLimitReachedException)
         .WaitAndRetryAsync(MaxRetries, SleepDurationProvider, OnRetryAsync);
 
     private static readonly Policy RetryPolicy = Policy
-        .Handle<HttpRequestException>(ex => ex.Message.ToUpperInvariant().Contains(RateLimitReachedMessage))
+        .Handle<HttpRequestException>(IsRateLimitReachedException)
         .WaitAndRetry(MaxRetries, SleepDurationProvider, OnRetry);
+
+    private static bool IsRateLimitReachedException(HttpRequestException httpException)
+    {
+        return RateLimitReachedRegex.IsMatch(httpException.Message);
+    }
 
     private static TimeSpan SleepDurationProvider(int retryAttempt, Exception exception, Context context)
     {
