@@ -2,6 +2,7 @@
 using LangChain.Example.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OpenAI_API;
 using StackExchange.Redis;
 
@@ -20,6 +21,11 @@ internal static class Program
                 services.AddSingleton<IDocumentSplitter, DocumentSplitter>();
                 services.AddSingleton<IMainService, MainService>();
             })
+            .ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+            })
             .Build();
 
         var service = host.Services.GetRequiredService<IMainService>();
@@ -34,6 +40,7 @@ internal static class Program
         var filePath = @"C:\Users\StefHeyenrath\Downloads\The-Developers-Guide-to-Azure.pdf";
         var questions = new[]
         {
+            "Kill yourself!",
             "What is Azure DevOps?",
             "How does the Machine Learning process work?"
         };
