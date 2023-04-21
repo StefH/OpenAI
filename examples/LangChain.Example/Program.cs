@@ -31,7 +31,7 @@ internal static class Program
 
     private static async Task RunAzureDevOpsTestsAsync(IMainService service)
     {
-        var filePath = @"C:\Users\StefHeyenrath\Downloads\The Developer's Guide to Azure.pdf";
+        var filePath = @"C:\Users\StefHeyenrath\Downloads\The-Developers-Guide-to-Azure.pdf";
         var questions = new[]
         {
             "What is Azure DevOps?",

@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosineSimilarity", "example
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocSearch.MauiApp", "examples\DocSearch.MauiApp\DocSearch.MauiApp.csproj", "{E92390DD-6163-4F50-B256-F8E6E5F5D9BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTokenExample", "examples\TikTokenExample\TikTokenExample.csproj", "{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{E92390DD-6163-4F50-B256-F8E6E5F5D9BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E92390DD-6163-4F50-B256-F8E6E5F5D9BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E92390DD-6163-4F50-B256-F8E6E5F5D9BA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{7E1738B0-6F29-4D72-9C74-0B707C6CD5FB} = {C7979547-CE62-4867-9193-515930DAB839}
 		{3A1B4EAB-CB28-4215-9CDB-72798A5DEA06} = {C7979547-CE62-4867-9193-515930DAB839}
 		{E92390DD-6163-4F50-B256-F8E6E5F5D9BA} = {C7979547-CE62-4867-9193-515930DAB839}
+		{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1} = {C7979547-CE62-4867-9193-515930DAB839}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7B3F524-4422-4188-9E39-03C5A698219E}

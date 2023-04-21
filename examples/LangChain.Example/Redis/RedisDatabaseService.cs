@@ -35,16 +35,16 @@ internal class RedisDatabaseService : IRedisDatabaseService
             .ToArray();
 
         return sortedDocuments
-            .Select(document => new 
-            { 
-                Idx = (int) document["idx"],
+            .Select(document => new
+            {
+                Idx = (int)document["idx"],
                 Text = (string?)document["text"],
                 Score = (float)document["vector_score"]
             })
             .Where(document => !string.IsNullOrEmpty(document.Text))
             .Select(document => new VectorDocument(document.Idx, document.Text!, document.Score))
             .ToArray();
-    
+
         //var properties = document.GetProperties().ToArray();
         //var idx = (int)properties.First(p => p.Key == "idx").Value;
         // var text = (string?)document["text"];
@@ -58,8 +58,6 @@ internal class RedisDatabaseService : IRedisDatabaseService
         foreach (var x in parts.Select((part, idx) => new { idx, part }))
         {
             Console.WriteLine("{0}/{1}", x.idx, parts.Count);
-
-            //await Task.Delay(TimeSpan.FromSeconds(0.5));
 
             var embeddings = await func(x.part);
             var byteArray = MemoryMarshal.Cast<float, byte>(embeddings).ToArray();

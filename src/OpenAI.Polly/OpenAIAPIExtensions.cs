@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Polly;
+using Polly.Retry;
 
 // ReSharper disable once CheckNamespace
 namespace OpenAI_API;
@@ -14,7 +15,7 @@ namespace OpenAI_API;
 /// </summary>
 public static class OpenAIAPIExtensions
 {
-    private const int DefaultTimeOutInSeconds = 1;
+    private const int DefaultTimeOutInSeconds = 20;
     private const int MaxRetries = 5;
     private static readonly Regex RateLimitReachedRegex = new("Rate limit reached", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     private static readonly Regex PleaseTryAgainRegex = new(@"Please try again in (\d+)s\.", RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -32,7 +33,7 @@ public static class OpenAIAPIExtensions
         return false;
     }
 
-    private static readonly AsyncPolicy AsyncRetryPolicy = Policy
+    private static readonly AsyncRetryPolicy AsyncRetryPolicy = Policy
         .Handle<HttpRequestException>(IsRateLimitReachedException)
         .WaitAndRetryAsync(MaxRetries, SleepDurationProvider, OnRetryAsync);
 
@@ -47,18 +48,20 @@ public static class OpenAIAPIExtensions
 
     private static TimeSpan SleepDurationProvider(int retryAttempt, Exception exception, Context context)
     {
-        return TimeSpan.FromSeconds(TryExtractWaitSecondsFromExceptionMessage(exception.Message, out var waitSeconds) ? waitSeconds : DefaultTimeOutInSeconds);
+        return retryAttempt == 1 ? 
+            TimeSpan.FromSeconds(TryExtractWaitSecondsFromExceptionMessage(exception.Message, out var waitSeconds) ? waitSeconds : DefaultTimeOutInSeconds) : 
+            TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
     }
 
     private static Task OnRetryAsync(Exception exception, TimeSpan timeSpan, int retryCount, Context context)
     {
-        Debug.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
+        Console.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
         return Task.CompletedTask;
     }
 
     private static void OnRetry(Exception exception, TimeSpan timeSpan, int retryCount, Context context)
     {
-        Debug.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
+        Console.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
     }
 
     /// <summary>

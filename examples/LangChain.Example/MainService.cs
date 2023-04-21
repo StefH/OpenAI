@@ -43,7 +43,7 @@ internal class MainService : IMainService
         // var searchText = string.Join(" ", parts);
 
         Console.Write("A: ");
-        var text = string.Join(" ", vectorDocuments.Take(3).Select(v => v.Text));
+        var text = string.Join("\r\n", vectorDocuments.Select(v => v.Text));
 
         //foreach (var vectorDocument in vectorDocuments)
         {
