@@ -5,7 +5,6 @@ using LangChain.Example.Redis;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
 using SharpToken;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LangChain.Example;
 
@@ -79,7 +78,7 @@ internal class MainService : IMainService
         contentBuilder.AppendLine(@"- Do not start your answer with ""Based on the source text,""");
         contentBuilder.AppendLine(@"- Only base your answer on the source text");
         contentBuilder.AppendLine(@"- When you cannot give a good answer based on the text, return ""I cannot find any relevant information.""");
-        
+
         /*
         contentBuilder.AppendLine(@"Based on the source text answer the question and follow the next requirements:");
 
