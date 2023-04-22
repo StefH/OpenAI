@@ -30,9 +30,9 @@ internal static class Program
 
         var service = host.Services.GetRequiredService<IMainService>();
 
-        await RunAzureDevOpsTestsAsync(service);
+        //await RunAzureDevOpsTestsAsync(service);
         await RunDataScienceTestsAsync(service);
-        await RunBlazorTestsAsync(service);
+        //await RunBlazorTestsAsync(service);
     }
 
     private static async Task RunAzureDevOpsTestsAsync(IMainService service)
@@ -70,8 +70,8 @@ internal static class Program
         var filePath = @"C:\Users\StefHeyenrath\Downloads\field-guide-to-data-science.pdf";
         var questions = new[]
         {
-            //"What are Templated components and how to use these in Blazor?",
-            "What is Fractal Analytic Model?",
+            "What are Templated components and how to use these in Blazor?",
+            "What is the Fractal Analytic Model?",
             "What are fractals?",
             "What is data science?",
             "What are examples of good data science teams?",

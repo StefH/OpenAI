@@ -77,7 +77,7 @@ internal class MainService : IMainService
         contentBuilder.AppendLine(@"- Make sure to give a concrete answer");
         contentBuilder.AppendLine(@"- Do not start your answer with ""Based on the source text,""");
         contentBuilder.AppendLine(@"- Only base your answer on the source text");
-        contentBuilder.AppendLine(@"- When you cannot give a good answer based on the text, return ""I cannot find any relevant information.""");
+        contentBuilder.AppendLine(@"- When you cannot give a good answer based on the source text, return ""I cannot find any relevant information.""");
 
         /*
         contentBuilder.AppendLine(@"Based on the source text answer the question and follow the next requirements:");
