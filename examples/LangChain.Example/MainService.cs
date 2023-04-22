@@ -41,7 +41,7 @@ internal class MainService : IMainService
         Console.WriteLine("Q: {0}", question);
         Console.Write("A: ");
 
-        var moderation = await _openAiAPI.WithRetry(api => api.Moderation.CallModerationAsync(question));
+        var moderation = await _openAiAPI.Moderation.WithRetry(api => api.CallModerationAsync(question));
         if (moderation.Results.Any(r => r.Flagged))
         {
             Console.WriteLine("Sorry, that question is not allowed.");
@@ -49,10 +49,10 @@ internal class MainService : IMainService
             return;
         }
 
-        var questionEmbeddings = await _openAiAPI.WithRetry(api => api.Embeddings.GetEmbeddingsAsync(question));
+        var questionEmbeddings = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
         var questionArray = MemoryMarshal.Cast<float, byte>(questionEmbeddings).ToArray();
 
-        var chat = _openAiAPI.WithRetry(api => api.Chat.CreateConversation());
+        var chat = _openAiAPI.Chat.WithRetry(api => api.CreateConversation());
         // chat.Model = "gpt-4";
 
         var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionArray);
@@ -90,7 +90,8 @@ internal class MainService : IMainService
         contentBuilder.AppendLine($"source text: \"{textBuilder}\"");
         contentBuilder.AppendLine($"question: \"{question}\"");*/
 
-        chat.WithRetry(c => c.AppendUserInput(contentBuilder.ToString()));
+        //chat.WithRetry(c => c.AppendUserInput(contentBuilder.ToString()));
+        chat.AppendUserInput(contentBuilder.ToString());
 
         var response = await chat.WithRetry(c => c.GetResponseFromChatbotAsync());
         //if (response == NullAnswer)
@@ -159,7 +160,7 @@ internal class MainService : IMainService
             indexName: indexName,
             prefix: prefix,
             parts,
-            embeddingFunc: input => _openAiAPI.WithRetry(api => api.Embeddings.GetEmbeddingsAsync(input)),
+            embeddingFunc: input => _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(input)),
             tokenFunc: async input => await Task.Run(() => _encoding.Encode(input))
         );
     }
