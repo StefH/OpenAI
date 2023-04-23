@@ -16,13 +16,4 @@ Unhandled exception. System.Net.Http.HttpRequestException: Error at embeddings (
 ```
 
 ### Usage
-```csharp
-IOpenAIAPI openAiAPI = new OpenAIAPI();
-float[] embeddings = await openAiAPI.WithRetry(api => api.Embeddings.GetEmbeddingsAsync("What is a cat?"));
-```
-
-#### Extension Methods
-There are 3 extension methods that can be used to handle TooManyRequests Exceptions:
-- `WithRetry` which returns a `Task<TResult>`
-- `WithRetry` which returns a `Task`
-- `WithRetry` which returns nothing (`void`)
+m
