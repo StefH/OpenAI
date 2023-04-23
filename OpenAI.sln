@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI.Polly", "src\OpenAI.Polly\OpenAI.Polly.csproj", "{9DAD5E79-9844-4106-B292-2F2D581153B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{C7979547-CE62-4867-9193-515930DAB839}"
+	ProjectSection(SolutionItems) = preProject
+		examples\chats.txt = examples\chats.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LangChain.Example", "examples\LangChain.Example\LangChain.Example.csproj", "{7E1738B0-6F29-4D72-9C74-0B707C6CD5FB}"
 EndProject
@@ -20,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosineSimilarity", "example
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocSearch.MauiApp", "examples\DocSearch.MauiApp\DocSearch.MauiApp.csproj", "{E92390DD-6163-4F50-B256-F8E6E5F5D9BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTokenExample", "examples\TikTokenExample\TikTokenExample.csproj", "{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTokenExample", "examples\TikTokenExample\TikTokenExample.csproj", "{3DA0325A-1AD5-4A70-83CC-F179EC52F8E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
