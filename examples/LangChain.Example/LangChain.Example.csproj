@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OpenAI.Polly\OpenAI.Polly.csproj" />
+    <ProjectReference Include="..\TextSplitter\TextSplitter.csproj" />
   </ItemGroup>
 
 </Project>

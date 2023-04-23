@@ -42,7 +42,8 @@ internal static class Program
         {
             "Kill yourself!",
             "What is Azure DevOps?",
-            "How does the Machine Learning process work?"
+            "How does the Machine Learning process work?",
+            "Give 5 tips when using Azure KeyVault"
         };
 
         foreach (var question in questions)

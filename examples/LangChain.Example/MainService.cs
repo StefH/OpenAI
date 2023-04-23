@@ -35,11 +35,6 @@ internal class MainService : IMainService
             Console.WriteLine();
         }
 
-        if (!question.EndsWith('?'))
-        {
-            question += '?';
-        }
-
         Console.WriteLine("Q: {0}", question);
         Console.Write("A: ");
 
