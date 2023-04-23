@@ -30,9 +30,9 @@ internal static class Program
 
         var service = host.Services.GetRequiredService<IMainService>();
 
-        //await RunAzureDevOpsTestsAsync(service);
+        await RunAzureDevOpsTestsAsync(service);
         await RunDataScienceTestsAsync(service);
-        //await RunBlazorTestsAsync(service);
+        await RunBlazorTestsAsync(service);
     }
 
     private static async Task RunAzureDevOpsTestsAsync(IMainService service)
@@ -88,56 +88,45 @@ internal static class Program
 }
 
 /*
+Q: Kill yourself!
+A: Sorry, that question is not allowed.
+
 Q: What is Azure DevOps?
-A: Azure DevOps is a Microsoft product that provides software development teams with a comprehensive set of tools for the entire development lifecycle. 
-   It enables developers to manage code repositories, build and test applications, and deploy them to Azure or other platforms. 
-   Teams can also use Azure DevOps to manage infrastructure as code, track work items, and monitor application performance. 
-   The platform offers a range of features, including the ability to customize workflows and pipelines, integrate with third-party tools, and access a marketplace for extensions and add-ons. 
-   Security is also a key feature of Azure DevOps, with tools for integrating security into workflows and proactively scanning repositories for potential vulnerabilities.
+A: Azure DevOps is a platform offering from Microsoft that covers the software development lifecycle. It includes tools for tracking work, building and deploying code, testing, and managing artifacts. It is one of the integrated DevOps options alongside Visual Studio, Visual Studio Code, and GitHub, and allows for hybrid Azure DevOps and GitHub environments. It also provides features for implementing DevSecOps practices, such as GitHub Advanced Security, secret scanning, and understanding runtime behavior through Azure Monitor.
 
 Q: How does the Machine Learning process work?
-A: The Azure Machine Learning platform offers end-to-end capabilities for the Machine Learning process. 
-   Data can be prepared, models can be trained, tested, and deployed, and their lifecycle can be tracked through the model registry. 
-   The platform supports popular languages such as Python, R, and Azure CLI, as well as open-source technologies such as TensorFlow, PyTorch, and scikit-learn. 
-   Additionally, it provides a low-code/no-code entry system to help those who need assistance getting started with ML concepts. 
-   The platform also offers an automated ML experience where multiple ML experiments are run in parallel to identify the ideal algorithm for a scenario. 
-   Overall, the Azure Machine Learning platform can save time, improve model accuracy, and enable reliable deployments when building custom models.
+A: The Machine Learning process works as follows: Data containing patterns is collected and prepared for the ML algorithm. The ML algorithm is used to train a model to identify these patterns. The trained model is deployed so that it can be used to recognize patterns in new datasets. Applications use services or libraries to use the trained model and take actions based on the results. The crucial part of this process is that it is iterative. Thus, the ML model can be improved constantly by training it with new data and adjusting the algorithm to distinguish correct results from wrong ones.
+
+Q: Give 5 tips when using Azure KeyVault
+A: Five tips for using Azure KeyVault are:
+
+1. Use KeyVault to securely store connection strings for web applications, instead of storing them in the configuration system.
+2. KeyVault can also be used to store SSL certificates for securing traffic to and from applications over HTTPS.
+3. Managed identities for Azure resources feature can be used to keep credentials out of the code completely.
+4. KeyVault supports Bring Your Own Key (BYOK) feature to encrypt data using privately owned keys.
+5. Use Azure Policy to create policy as code and ensure the security of your applications.
 
 Q: What are Templated components and how to use these in Blazor?
-A: I'm sorry, but the given text does not provide any information related to templated components and Blazor.
+A: I cannot find any relevant information about Templated components and how to use these in Blazor in the given source text.
+
+Q: What is the Fractal Analytic Model?
+A: The Fractal Analytic Model is an approach to engineering complete solutions in data science that requires progressively decomposing a problem into smaller sub-problems. At any given stage, the analytic itself is a collection of smaller computations that decompose into yet smaller computations, until only a single analytic technique is needed to achieve the analytic goal. The Fractal Analytic Model involves dividing the problem into four component pieces: goal, action, data, and computation, each with their own sub-problems, data, computations, and actions. The model is iterative in nature, where early versions of an analytic follow the same development process as later versions.
 
 Q: What are fractals?
-A: Fractals are mathematical sets that display self-similar patterns, meaning that as you zoom in on a fractal, the same patterns reappear. 
-   They can be compared to a stalk of broccoli where progressively smaller pieces of broccoli look like the original stalk. 
-   This concept is used to describe the nature of Data Science analytics, which are also fractal in nature in both time and construction. 
-   The Fractal Analytic Model embodies the iterative nature of good Data Science and problem decomposition creates multiple sub-problems, each with their own goals, data, computations, and actions, which can be classified into different classes of analytics.
+A: Fractals are mathematical sets that display self-similar patterns. As an example given in the text, a stalk of broccoli is a fractal because as you zoom in on a piece of broccoli, the same patterns reappear and progressively smaller pieces of broccoli still look like the original stalk. In the context of Data Science, analytics are also described as fractal in nature, meaning that they follow a development process where the analytic itself is a collection of smaller analytics that often decompose into yet smaller analytics.
 
 Q: What is data science?
-A: Data Science is the art of turning data into actions and creating data products that provide actionable information without exposing decision makers to the underlying data or analytics. 
-   It involves the extraction of timely, actionable information from diverse data sources to drive data products that answer questions and solve problems. 
-   It is the competitive advantage for organizations interested in winning and improving decision-making.
+A: Data Science is the process of turning data into insights and taking actionable steps based on those insights. It involves the use of techniques and tools to analyze data and create models that can be used to make informed decisions. Data Scientists are experts in this field who are able to create radical new ways of thinking about data and its relevance in our lives. They play a critical role in guiding organizations towards making the most out of their data as a resource. In today's data-driven world, data is considered the new currency, and Data Science is the mechanism by which we can tap into it to solve some of humanity's toughest challenges.
 
 Q: What are examples of good data science teams?
-A: Good data science teams are those that have a broad view of various technologies and industries, constantly test and improve their models, and are able to tackle increasingly complex analytical goals. 
-   They also prioritize collaboration and open communication within the team and with other departments in the organization. 
-   Success can be achieved at every stage of maturity in data science capabilities.
+A: Examples of good data science teams include a multidisciplinary team of computer scientists, mathematicians, and domain experts, as well as companies with strong data science teams that focus on a diverse set of government and commercial clients across a variety of domains. Booz Allen Hamilton is noted as an industry-leading team of data scientists with a unique perspective on the conceptual models, tradecraft, processes, and culture of data science.
 
 Q: What is the advice state of data maturity?
-A: The advice state of data maturity is the highest level of maturity in the Data Science capability model. 
-   It is the stage where an organization can define its possible decisions, optimize over those decisions, and advise on the decision that gives the best outcome. 
-   At this stage, organizations have the ability to generate true insights and gain a significant competitive advantage. 
-   However, very few organizations are currently operating at this level of maturity.
+A: The advice state of data maturity is the highest level of maturity described in the text. Organizations that reach this level are able to achieve true insights and real competitive advantage by utilizing past observations to predict future observations and optimizing decisions for the best outcomes. The advice at this stage is to target advertise to specific groups for certain products to maximize revenue. However, the text also notes that very few organizations have reached this level of maturity and it is the new frontier of Data Science.
 
 Q: What is the collect state of data maturity?
-A: The Collect stage of data maturity focuses on identifying and gathering internal or external datasets, and is the starting point for creating a Data Science capability within an organization.
-*/
+A: The Collect stage is the initial stage of data maturity where organizations focus on identifying and collecting internal or external datasets. The effort is focused on aggregating data, identifying the required data and collecting it. Gathering sales records and corresponding weather data is an example of data collection in this stage.
 
-/*
 Q: What are Templated components and how to use these in Blazor?
-A: Templated components in Blazor are reusable UI components that enable developers to specify a portion of the HTML used to render a container control. 
-   This is done by defining component parameters of type RenderFragment or RenderFragment<T>. 
-   A RenderFragment represents a chunk of Razor markup that can then be rendered by the component, while a RenderFragment<T> is a chunk of Razor markup that takes a parameter that can be specified when the render fragment is rendered. 
-   To capture child content, developers can define a component parameter of type RenderFragment and name it ChildContent. 
-   Templated components can also define multiple component parameters of type RenderFragment or RenderFragment<T>, and the parameter for a RenderFragment<T> can be specified when it's invoked. 
-   To use a templated component, developers can bring the component's namespace into scope using the @using directive, and then specify the component using its name in Razor syntax.
+A: Templated components in Blazor allow developers to define component parameters of type RenderFragment or RenderFragment<T>, which represent chunks of Razor markup that can be rendered by the component. These components can be used to render data in a customizable way, similar to ASP.NET Web Forms templated controls like Repeater and DataList.
 */

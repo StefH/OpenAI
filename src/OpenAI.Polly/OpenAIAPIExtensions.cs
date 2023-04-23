@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,13 +61,13 @@ public static partial class OpenAIAPIExtensions
 
     private static Task OnRetryAsync(Exception exception, TimeSpan timeSpan, int retryCount, Context context)
     {
-        Console.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
+        Debug.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
         return Task.CompletedTask;
     }
 
     private static void OnRetry(Exception exception, TimeSpan timeSpan, int retryCount, Context context)
     {
-        Console.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
+        Debug.WriteLine($"Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{MaxRetries}.");
     }
 
     ///// <summary>
