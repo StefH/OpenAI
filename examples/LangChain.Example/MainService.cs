@@ -41,7 +41,7 @@ internal class MainService : IMainService
         Console.WriteLine("Q: {0}", question);
         Console.Write("A: ");
 
-        var moderation = await _openAiAPI.Moderation.WithRetry(api => api.CallModerationAsync(question));
+        var moderation = await _openAiAPI.Moderation.WithRetry(moderation => moderation.CallModerationAsync(question));
         if (moderation.Results.Any(r => r.Flagged))
         {
             Console.WriteLine("Sorry, that question is not allowed.");
@@ -52,7 +52,7 @@ internal class MainService : IMainService
         var questionEmbeddings = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
         var questionArray = MemoryMarshal.Cast<float, byte>(questionEmbeddings).ToArray();
 
-        var chat = _openAiAPI.Chat.WithRetry(api => api.CreateConversation());
+        var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
         // chat.Model = "gpt-4";
 
         var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionArray);
@@ -93,7 +93,7 @@ internal class MainService : IMainService
         //chat.WithRetry(c => c.AppendUserInput(contentBuilder.ToString()));
         chat.AppendUserInput(contentBuilder.ToString());
 
-        var response = await chat.WithRetry(c => c.GetResponseFromChatbotAsync());
+        var response = await chat.WithRetry(conversation => conversation.GetResponseFromChatbotAsync());
         //if (response == NullAnswer)
         //{
         //    continue;
@@ -160,7 +160,7 @@ internal class MainService : IMainService
             indexName: indexName,
             prefix: prefix,
             parts,
-            embeddingFunc: input => _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(input)),
+            embeddingFunc: input => _openAiAPI.Embeddings.WithRetry(embeddings => embeddings.GetEmbeddingsAsync(input)),
             tokenFunc: async input => await Task.Run(() => _encoding.Encode(input))
         );
     }

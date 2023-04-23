@@ -18,20 +18,7 @@ public static partial class OpenAIAPIExtensions
     {
         return AsyncRetryPolicy.ExecuteAsync(() => func(conversation));
     }
-
-    /// <summary>
-    /// Executes a given asynchronous function with retry logic, handling rate limits for the OpenAI API.
-    /// </summary>
-    /// <typeparam name="TResult">The type of the result returned by the function.</typeparam>
-    /// <param name="conversation">The conversation on which the function is executed.</param>
-    /// <param name="func">The asynchronous function to be executed with retry logic.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    public static Task<TResult> WithRetry<TResult>(this Conversation conversation, Func<Conversation, CancellationToken, Task<TResult>> func, CancellationToken cancellationToken)
-    {
-        return AsyncRetryPolicy.ExecuteAsync(ct => func(conversation, ct), cancellationToken);
-    }
-
+    
     /// <summary>
     /// Executes a given synchronous function with retry logic, handling rate limits for the OpenAI API.
     /// </summary>
@@ -44,18 +31,6 @@ public static partial class OpenAIAPIExtensions
     }
 
     /// <summary>
-    /// Executes a given synchronous function with retry logic, handling rate limits for the OpenAI API.
-    /// </summary>
-    /// <param name="conversation">The conversation on which the function is executed.</param>
-    /// <param name="func">The synchronous function to be executed with retry logic.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    public static Task WithRetry(this Conversation conversation, Func<Conversation, CancellationToken, Task> func, CancellationToken cancellationToken)
-    {
-        return AsyncRetryPolicy.ExecuteAsync(ct => func(conversation, ct), cancellationToken);
-    }
-
-    /// <summary>
     /// Executes a given synchronous action with retry logic, handling rate limits for the OpenAI API.
     /// </summary>
     /// <typeparam name="TResult">The type of the result returned by the function.</typeparam>
@@ -65,15 +40,5 @@ public static partial class OpenAIAPIExtensions
     public static TResult WithRetry<TResult>(this Conversation conversation, Func<Conversation, TResult> func)
     {
         return RetryPolicy.Execute(() => func(conversation));
-    }
-
-    /// <summary>
-    /// Executes a given synchronous action with retry logic, handling rate limits for the OpenAI API.
-    /// </summary>
-    /// <param name="conversation">The conversation on which the action is executed.</param>
-    /// <param name="func">The synchronous action to be executed with retry logic.</param>
-    public static void WithRetry(this Conversation conversation, Action<Conversation> func)
-    {
-        RetryPolicy.Execute(() => func(conversation));
     }
 }
