@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
-using Replicate.Net.Common.Example.Factory;
 
 namespace DocSearch.MauiApp;
 
@@ -28,7 +27,7 @@ public static class MauiProgram
         builder.Services.AddHttpClient();
 
         // services
-        builder.Services.AddSingleton<IExampleApiFactory, ExampleApiFactory>();
+        // builder.Services.AddSingleton<IExampleApiFactory, ExampleApiFactory>();
 
         // pages
         builder.Services.AddTransient<MainPage>();

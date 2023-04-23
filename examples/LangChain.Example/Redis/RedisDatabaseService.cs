@@ -21,9 +21,9 @@ internal class RedisDatabaseService : IRedisDatabaseService
     }
 
     public async Task InsertAsync(
-        string indexName, 
-        string prefix, 
-        IReadOnlyList<string> parts, 
+        string indexName,
+        string prefix,
+        IReadOnlyList<string> parts,
         Func<string, Task<float[]>> embeddingFunc,
         Func<string, Task<IReadOnlyList<int>>> tokenFunc
     )
@@ -90,20 +90,17 @@ internal class RedisDatabaseService : IRedisDatabaseService
         var searchResult = await _db.Value.FT().SearchAsync(indexName, query);
 
         var sortedDocuments = searchResult.Documents
-            .OrderByDescending(d => d.GetProperties().First(p => p.Key == "vector_score").Value)
+            .Select(document => new VectorDocument
+            (
+                Idx: (int)document["idx"],
+                Text: document["text"]!,
+                TokenLength: (int)document["tokens"],
+                Score: (float)document["vector_score"]
+            ))
+            .OrderByDescending(document => document.Score)
             .ToArray();
 
-        return sortedDocuments
-            .Select(document => new
-            {
-                Idx = (int)document["idx"],
-                Text = (string?)document["text"],
-                Tokens = (int)document["tokens"],
-                Score = (float)document["vector_score"]
-            })
-            .Where(document => !string.IsNullOrEmpty(document.Text))
-            .Select(document => new VectorDocument(document.Idx, document.Text!, document.Tokens, document.Score))
-            .ToArray();
+        return sortedDocuments;
 
         //var properties = document.GetProperties().ToArray();
         //var idx = (int)properties.First(p => p.Key == "idx").Value;
@@ -120,9 +117,9 @@ internal class RedisDatabaseService : IRedisDatabaseService
             .AddVectorField("embedding", Schema.VectorField.VectorAlgo.HNSW,
                 new Dictionary<string, object>
                 {
-                    { "TYPE", "FLOAT32" },
-                    { "DIM", "1536" },
-                    { "DISTANCE_METRIC", "COSINE" }
+                { "TYPE", "FLOAT32" },
+                { "DIM", "1536" },
+                { "DISTANCE_METRIC", "COSINE" }
                 }
             );
 

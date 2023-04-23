@@ -28,15 +28,17 @@ internal class MainService : IMainService
 
     public async Task CallQuestionAsync(string filePath, string question)
     {
-        var prefix = Path.GetFileNameWithoutExtension(filePath);
-        var indexName = $"{prefix}-index";
-
-        if (!_dataInserter.DoesDataExists(prefix))
+        question = question.Trim();
+        if (string.IsNullOrEmpty(question))
         {
-            await AddData(filePath, indexName, prefix);
+            Console.WriteLine("You did not specify a question.");
+            Console.WriteLine();
         }
 
-        question = question.Trim();
+        if (!question.EndsWith('?'))
+        {
+            question += '?';
+        }
 
         Console.WriteLine("Q: {0}", question);
         Console.Write("A: ");
@@ -49,26 +51,36 @@ internal class MainService : IMainService
             return;
         }
 
-        var questionEmbeddings = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
-        var questionArray = MemoryMarshal.Cast<float, byte>(questionEmbeddings).ToArray();
+        var questionAsVector = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
+        var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
 
         var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
         // chat.Model = "gpt-4";
 
-        var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionArray);
+        var prefix = Path.GetFileNameWithoutExtension(filePath);
+        var indexName = $"{prefix}-index";
+
+        if (!_dataInserter.DoesDataExists(prefix))
+        {
+            await AddData(filePath, indexName, prefix);
+        }
+
+        var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionAsBytes);
         var textBuilder = new StringBuilder();
 
         int tokenLength = 0;
         foreach (var vectorDocument in vectorDocuments)
         {
-            if (tokenLength > 4096)
+            if (tokenLength < 4096)
+            {
+                textBuilder.AppendLine(vectorDocument.Text);
+                tokenLength += vectorDocument.TokenLength;
+            }
+            else
             {
                 _logger.LogDebug("TokenLength is max");
                 break;
             }
-
-            textBuilder.AppendLine(vectorDocument.Text);
-            tokenLength += vectorDocument.TokenLength;
         }
 
         var contentBuilder = new StringBuilder();
