@@ -16,4 +16,7 @@ Unhandled exception. System.Net.Http.HttpRequestException: Error at embeddings (
 ```
 
 ### Usage
-m
+```csharp
+IOpenAIAPI openAiAPI = new OpenAIAPI("Your OpenAI API-Key", "Your Organization ID");
+float[] embeddings = await openAiAPI.Embeddings.WithRetry(embeddings => embeddings.GetEmbeddingsAsync("What is a cat?"));
+```
