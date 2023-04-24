@@ -40,14 +40,4 @@ public static partial class OpenAIAPIExtensions
     {
         return RetryPolicy.Execute(() => func(endpoint));
     }
-
-    /// <summary>
-    /// Executes a given synchronous action with retry logic, handling rate limits for the OpenAI API.
-    /// </summary>
-    /// <param name="endpoint">The endpoint on which the action is executed.</param>
-    /// <param name="func">The synchronous action to be executed with retry logic.</param>
-    public static void WithRetry(this ICompletionEndpoint endpoint, Action<ICompletionEndpoint> func)
-    {
-        RetryPolicy.Execute(() => func(endpoint));
-    }
 }
