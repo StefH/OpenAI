@@ -3,7 +3,7 @@ using UglyToad.PdfPig;
 
 namespace LangChain.Example.PDFUtils;
 
-public class DocumentSplitter : IDocumentSplitter
+internal class DocumentSplitter : IDocumentSplitter
 {
     private const char Dot = '.';
     private const char Space = ' ';

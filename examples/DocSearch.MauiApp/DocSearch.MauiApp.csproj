@@ -50,9 +50,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\LangChain.Example\IMainService.cs" Link="Services\IMainService.cs" />
+    <Compile Include="..\LangChain.Example\MainService.cs" Link="Services\MainService.cs" />
+    <Compile Include="..\LangChain.Example\PDFUtils\DocumentSplitter.cs" Link="Services\DocumentSplitter.cs" />
+    <Compile Include="..\LangChain.Example\PDFUtils\IDocumentSplitter.cs" Link="Services\IDocumentSplitter.cs" />
+    <Compile Include="..\LangChain.Example\Redis\IRedisDatabaseService.cs" Link="Services\IRedisDatabaseService.cs" />
+    <Compile Include="..\LangChain.Example\Redis\Models\VectorDocument.cs" Link="Models\VectorDocument.cs" />
+    <Compile Include="..\LangChain.Example\Redis\RedisDatabaseService.cs" Link="Services\RedisDatabaseService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="NRedisStack" Version="0.6.0" />
+    <PackageReference Include="OpenAI" Version="1.7.2" />
+    <PackageReference Include="PdfPig" Version="0.1.7" />
+    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="SharpToken" Version="1.0.25" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.104" />
+    <PackageReference Include="Stef.Validation" Version="0.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpenAI.Polly\OpenAI.Polly.csproj" />
   </ItemGroup>
 
 </Project>
