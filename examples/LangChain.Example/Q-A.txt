@@ -1,0 +1,39 @@
+Q: Kill yourself!
+A: Sorry, that question is not allowed.
+
+Q: What is Azure DevOps?
+A: Azure DevOps is a platform offering from Microsoft that provides mature software development lifecycle features. These include tracking work, building and deploying code, testing, and managing artifacts. It also offers integrated DevSecOps features such as Dependabot and GitHub Advanced Security to scan for vulnerabilities in code. Customers can adopt hybrid GitHub and Azure DevOps environments, with two well-known hybrid solutions being Azure Boards-GitHub integration and Azure Pipelines-GitHub integration. Planning and tracking is also an aspect of Azure DevOps, with management of product roadmaps and backlogs using agile methodologies.
+
+Q: How does the Machine Learning process work?
+A: The Machine Learning process involves collecting data, preparing it for the ML algorithm, using the algorithm to train a model to identify patterns within the data, deploying the trained model to recognize patterns in new datasets, and using services or libraries to take actions based on the results. The crucial part of this process is that it is iterative and can be improved constantly by training the model with new data and adjusting the algorithm to distinguish correct results from wrong ones.
+
+Q: Give 5 tips when using Azure KeyVault
+A: 1. Use Azure Key Vault to securely store and manage secrets and keys used by your application.
+2. Use Key Vault to store SSL and other certificates used to secure traffic to and from your applications over HTTPS.
+3. Instead of storing connection strings in your application's configuration system, retrieve them securely from Key Vault.
+4. Utilize the managed identities for Azure resources feature to keep credentials out of your code completely.
+5. Use Azure Policy to create policy as code for managing and enforcing security policies for your Key Vault resources.
+
+Q: What are Templated components and how to use these in Blazor?
+A: I cannot find any relevant information.
+
+Q: What is the Fractal Analytic Model?
+A: The Fractal Analytic Model is an approach to problem decomposition in Data Science. It involves breaking down a problem into progressively smaller sub-problems, with each sub-problem having its own goals, data, computations, and actions. The Fractal Analytic Model is based on the concept of fractals, which are mathematical sets that display self-similar patterns, meaning that as you zoom in on a fractal, the same patterns reappear. In Data Science, earlier versions of an analytic follow the same development process as later versions, and at any given iteration, the analytic itself is a collection of smaller analytics that often decompose into yet smaller analytics. The model decomposes the Data Science product into four component pieces: Goal, Action, Data, and Computation.
+
+Q: What are fractals?
+A: Fractals are mathematical sets that display self-similar patterns. As described in the source text, if you zoom in on a fractal, the same patterns reappear. Fractals are used to explain the nature of Data Science analytics, which are iterative and often decomposed into smaller components, much like the structure of a broccoli stalk.
+
+Q: What is data science?
+A: Data science is the process of turning data into actionable information through the use of tradecraft, tools, and technologies. It supports deductive and inductive reasoning and encourages discovering new paths through exploratory data analysis. It is a blend of art, math, and code that can help organizations of all types generate value and solve humanity's toughest challenges by unlocking secrets hidden within data. Data is considered the new currency, and data science is the mechanism by which we tap into it. Data scientists are our guides on this journey, creating radical new ways of thinking about data and the world around us.
+
+Q: What are examples of good data science teams?
+A: Companies with strong data science teams often focus on a single class of problems, such as graph algorithms for social network analysis, and recommender models for online shopping. Booz Allen Hamilton, a consulting firm, stands out for supporting a diverse set of government and commercial clients across different domains, which provides them with a unique perspective on the conceptual models, tradecraft, processes, and culture of data science. They have built an industry-leading team of data scientists with a multidisciplinary group of computer scientists, mathematicians, and domain experts who produce new insights and analysis paths, solidifying the validity of the approach.
+
+Q: What is the advice state of data maturity?
+A: The advice state of data maturity is the highest level of maturity in the maturity model of a Data Science capability. Organizations that reach this stage are able to provide true insights and real competitive advantage by defining possible decisions, optimizing over those decisions, and advising to use the decision that gives the best outcome. The advice is based on predictive analytics that utilize past observations to predict future observations and identifying hidden relationships or patterns in the data. This advice helps organizations to target and advertise to specific groups for certain products to maximize revenue. However, it is noted that each stage never goes away entirely, and instead, the proportion of time spent on each stage goes down as organizations continuously advance in maturity.
+
+Q: What is the collect state of data maturity?
+A: The Collect stage is the initial stage of data maturity in the Data Science Maturity Model, where organizations focus on identifying and aggregating data from internal or external datasets. Examples of data collection include gathering sales records and corresponding weather data. As the organization matures, the proportion of effort spent on data collection decreases but never goes away entirely as new data sources become available and new analytic questions arise.
+
+Q: What are Templated components and how to use these in Blazor?
+A: Templated components in Blazor can be defined by using component parameters of type RenderFragment or RenderFragment<T>. A RenderFragment represents a chunk of Razor markup that can be rendered by the component, while a RenderFragment<T> is a chunk of Razor markup that takes a parameter that can be specified when the render fragment is rendered. These templated components can enable the developer to specify a portion of the HTML used to render a container control, similar to how templated controls work in ASP.NET Web Forms.

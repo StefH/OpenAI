@@ -10,6 +10,8 @@ namespace LangChain.Example;
 
 internal class MainService : IMainService
 {
+    private const int MaxTokenLength = 4096;
+    private const int MaxTokenLengthGpt4 = 8192;
     private readonly GptEncoding _encoding = GptEncoding.GetEncoding("cl100k_base");
     private const string NullAnswer = "NULL";
 
@@ -49,8 +51,13 @@ internal class MainService : IMainService
         var questionAsVector = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
         var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
 
+        var canUseGpt4 = await CanUseGPT4Async() && false;
+
         var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
-        // chat.Model = "gpt-4";
+        if (canUseGpt4)
+        {
+            chat.Model = "gpt-4";
+        }
 
         var prefix = Path.GetFileNameWithoutExtension(filePath);
         var indexName = $"{prefix}-index";
@@ -66,7 +73,7 @@ internal class MainService : IMainService
         int tokenLength = 0;
         foreach (var vectorDocument in vectorDocuments)
         {
-            if (tokenLength < 4096)
+            if (tokenLength < (canUseGpt4 ? MaxTokenLengthGpt4 : MaxTokenLength))
             {
                 textBuilder.AppendLine(vectorDocument.Text);
                 tokenLength += vectorDocument.TokenLength;
@@ -124,6 +131,12 @@ internal class MainService : IMainService
 
         Console.WriteLine();
         Console.WriteLine();
+    }
+    
+    private async Task<bool> CanUseGPT4Async()
+    {
+        var models = await _openAiAPI.Models.WithRetry(modelsEndpoint => modelsEndpoint.GetModelsAsync());
+        return models.Any(m => m.ModelID == "gpt-4");
     }
 
     //private static async IAsyncEnumerable<string> FilterResponseAsync(IAsyncEnumerable<string> inputEnumerable)
