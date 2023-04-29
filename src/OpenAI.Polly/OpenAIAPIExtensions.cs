@@ -21,7 +21,7 @@ public static partial class OpenAIAPIExtensions
     private static readonly Regex PleaseRetryYourRequestRegex = new("Please retry your request", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     private static readonly Regex PleaseTryAgainRegex = new(@"Please try again in (\d+)s\.", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-    private static readonly ILogger Logger = ServiceLocator.GetService<ILoggerFactory>().Value?.CreateLogger(nameof(OpenAIAPIExtensions)) ?? new DebugLogger(nameof(OpenAIAPIExtensions));
+    private static readonly Lazy<ILogger> Logger = new(() => ServiceLocator.GetService<ILoggerFactory>().Value?.CreateLogger(nameof(OpenAIAPIExtensions)) ?? new DebugLogger(nameof(OpenAIAPIExtensions)));
 
     private static bool TryExtractWaitSecondsFromExceptionMessage(string exceptionMessage, out int waitSeconds)
     {
@@ -71,6 +71,6 @@ public static partial class OpenAIAPIExtensions
 
     private static void OnRetry(Exception exception, TimeSpan timeSpan, int retryCount, Context context)
     {
-        Logger?.LogDebug(exception, "Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{maxRetries}.", timeSpan, retryCount, MaxRetries);
+        Logger.Value.LogDebug(exception, "Request failed. Waiting {timeSpan} before next retry. Retry attempt {retryCount}/{maxRetries}.", timeSpan, retryCount, MaxRetries);
     }
 }

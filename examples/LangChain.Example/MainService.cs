@@ -4,6 +4,7 @@ using LangChain.Example.PDFUtils;
 using LangChain.Example.Redis;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
+using OpenAI_API.Chat;
 using OpenAI_API.Polly;
 using SharpToken;
 
@@ -54,50 +55,14 @@ internal class MainService : IMainService
 
         var canUseGpt4 = await CanUseGPT4Async() && false;
 
-        var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
-        if (canUseGpt4)
-        {
-            _logger.LogInformation("Using GPT-4");
-            chat.Model = "gpt-4";
-        }
+        
 
         var prefix = Path.GetFileNameWithoutExtension(filePath);
         var indexName = $"{prefix}-index";
 
-        if (!_dataInserter.DoesDataExists(prefix))
-        {
-            await AddDataAsync(filePath, indexName, prefix);
-        }
+        await AddDataIfNotExistsAsync(filePath, indexName, prefix);
 
-        var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionAsBytes);
-        var textBuilder = new StringBuilder();
-
-        int tokenLength = 0;
-        foreach (var vectorDocument in vectorDocuments)
-        {
-            if (tokenLength < (canUseGpt4 ? MaxTokenLengthGpt4 : MaxTokenLength))
-            {
-                textBuilder.AppendLine(vectorDocument.Text);
-                tokenLength += vectorDocument.TokenLength;
-            }
-            else
-            {
-                _logger.LogDebug("TokenLength is max");
-                break;
-            }
-        }
-
-        var contentBuilder = new StringBuilder();
-        contentBuilder.AppendLine($"Based on the following source text \"{textBuilder.ToString()}\" follow the next requirements:");
-        contentBuilder.AppendLine($"- Answer the question: \"{question}\"");
-        contentBuilder.AppendLine(@"- Make sure to give a concrete answer");
-        contentBuilder.AppendLine(@"- Do not start your answer with ""Based on the source text,""");
-        contentBuilder.AppendLine(@"- Only base your answer on the source text");
-        contentBuilder.AppendLine(@"- When you cannot give a good answer based on the source text, return ""I cannot find any relevant information.""");
-
-        chat.AppendUserInput(contentBuilder.ToString());
-
-        var response = await chat.WithRetry(conversation => conversation.GetResponseFromChatbotAsync());
+        var response = await SearchForCosineSimilarityAndGetResponseFromChatGPTAsync(indexName, question, questionAsBytes, canUseGpt4);
         //if (response == NullAnswer)
         //{
         //    continue;
@@ -121,6 +86,46 @@ internal class MainService : IMainService
 
         Console.WriteLine();
         Console.WriteLine();
+    }
+
+    private async Task<string> SearchForCosineSimilarityAndGetResponseFromChatGPTAsync(string indexName, string question, byte[] questionAsBytes, bool canUseGpt4)
+    {
+        var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionAsBytes);
+        var textBuilder = new StringBuilder();
+
+        int tokenLength = 0;
+        foreach (var vectorDocument in vectorDocuments)
+        {
+            if (tokenLength < (canUseGpt4 ? MaxTokenLengthGpt4 : MaxTokenLength))
+            {
+                textBuilder.AppendLine(vectorDocument.Text);
+                tokenLength += vectorDocument.TokenLength;
+            }
+            else
+            {
+                _logger.LogDebug("TokenLength is max");
+                break;
+            }
+        }
+
+        // Here is where the 'magic' happens
+        var contentBuilder = new StringBuilder();
+        contentBuilder.AppendLine($"Based on the following source text \"{textBuilder.ToString()}\" follow the next requirements:");
+        contentBuilder.AppendLine($"- Answer the question: \"{question}\"");
+        contentBuilder.AppendLine(@"- Make sure to give a concrete answer");
+        contentBuilder.AppendLine(@"- Do not start your answer with ""Based on the source text,""");
+        contentBuilder.AppendLine(@"- Only base your answer on the source text");
+        contentBuilder.AppendLine(@"- When you cannot give a good answer based on the source text, return ""I cannot find any relevant information.""");
+
+        var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
+        if (canUseGpt4)
+        {
+            _logger.LogInformation("Using GPT-4");
+            chat.Model = "gpt-4";
+        }
+        chat.AppendUserInput(contentBuilder.ToString());
+
+        return await chat.WithRetry(conversation => conversation.GetResponseFromChatbotAsync());
     }
 
     private async Task<bool> CanUseGPT4Async()
@@ -162,8 +167,13 @@ internal class MainService : IMainService
     //    }
     //}
 
-    private async Task AddDataAsync(string filePath, string indexName, string prefix)
+    private async Task AddDataIfNotExistsAsync(string filePath, string indexName, string prefix)
     {
+        if (_dataInserter.DoesDataExists(prefix))
+        {
+            return;
+        }
+
         var textFragments = _documentSplitter.Split(filePath);
 
         await _dataInserter.InsertAsync(
