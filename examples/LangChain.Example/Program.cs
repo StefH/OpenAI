@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
+using OpenAI_API.Polly.DependencyInjection;
 using StackExchange.Redis;
 
 namespace LangChain.Example;
@@ -27,6 +28,8 @@ internal static class Program
                 logging.AddConsole();
             })
             .Build();
+
+        host.Services.UseOpenAIWithPolly();
 
         var service = host.Services.GetRequiredService<IMainService>();
 

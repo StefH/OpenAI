@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using MathNet.Numerics.LinearAlgebra;
 using OpenAI_API;
+using OpenAI_API.Polly;
 
 var gptEncoding = SharpToken.GptEncoding.GetEncoding("cl100k_base");
 

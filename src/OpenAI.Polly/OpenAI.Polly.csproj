@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Version>0.0.2</Version>
     <PackageId>OpenAI.Polly</PackageId>
-    <RootNamespace>OpenAI_API</RootNamespace>
+    <RootNamespace>OpenAI_API.Polly</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>11</LangVersion>
     <Nullable>enable</Nullable>

@@ -4,6 +4,7 @@ using LangChain.Example.PDFUtils;
 using LangChain.Example.Redis;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
+using OpenAI_API.Polly;
 using SharpToken;
 
 namespace LangChain.Example;

@@ -3,13 +3,12 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using OpenAI_API.DependencyInjection;
-using OpenAI_API.Logging;
+using OpenAI_API.Polly.DependencyInjection;
+using OpenAI_API.Polly.Logging;
 using Polly;
 using Polly.Retry;
 
-// ReSharper disable once CheckNamespace
-namespace OpenAI_API;
+namespace OpenAI_API.Polly;
 
 /// <summary>
 /// A static class providing extension methods for handling retries when consuming the OpenAI API.

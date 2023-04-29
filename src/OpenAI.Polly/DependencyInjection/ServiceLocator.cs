@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Stef.Validation;
 
-namespace OpenAI_API.DependencyInjection;
+namespace OpenAI_API.Polly.DependencyInjection;
 
 internal static class ServiceLocator
 {

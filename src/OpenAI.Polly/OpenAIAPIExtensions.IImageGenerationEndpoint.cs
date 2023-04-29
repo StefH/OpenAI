@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using OpenAI_API.Images;
 
-namespace OpenAI_API;
+namespace OpenAI_API.Polly;
 
 public static partial class OpenAIAPIExtensions
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenAI_API.DependencyInjection;
+namespace OpenAI_API.Polly.DependencyInjection;
 
 /// <summary>
 /// 

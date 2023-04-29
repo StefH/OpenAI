@@ -3,6 +3,7 @@ using LangChain.Example.PDFUtils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
+using OpenAI_API.Polly;
 using PdfCosineSearch.Models;
 using SharpToken;
 

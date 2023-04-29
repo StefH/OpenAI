@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Stef.Validation;
 
-namespace OpenAI_API.Logging;
+namespace OpenAI_API.Polly.Logging;
 
 internal class DebugLogger : ILogger
 {

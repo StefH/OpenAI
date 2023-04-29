@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
-using OpenAI_API.DependencyInjection;
+using OpenAI_API.Polly.DependencyInjection;
 using PdfCosineSearch.Models;
 
 namespace PdfCosineSearch;
