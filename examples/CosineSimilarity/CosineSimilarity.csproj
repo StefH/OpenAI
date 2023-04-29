@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="OpenAI" Version="1.7.2" />
+    <PackageReference Include="SharpToken" Version="1.0.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpenAI.Polly\OpenAI.Polly.csproj" />
   </ItemGroup>
 
 </Project>

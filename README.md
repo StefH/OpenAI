@@ -2,6 +2,9 @@
 OpenAI related projects...
 
 ## OpenAI.Polly
+This is an extension for the [OpenAI](https://github.com/OkGoDoIt/OpenAI-API-dotnet) project: a C#/.NET SDK for accessing the OpenAI GPT-3 API, ChatGPT, and DALL-E 2.
+
+
 [Polly](https://github.com/App-vNext/Polly) is used to handle exceptions like:
 
 ```

@@ -1,7 +1,19 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using System.Text.Json;
+using MathNet.Numerics.LinearAlgebra;
+using OpenAI_API;
 
-var v1 = new float[] { 0,27, 0,37, 0,47 };
-var v2 = new float[] { 0,29, 0,39, 0,49 };
+var gptEncoding = SharpToken.GptEncoding.GetEncoding("cl100k_base");
+
+var openAIAPI = new OpenAIAPI(new APIAuthentication(Environment.GetEnvironmentVariable("OpenAIAPI_Key"), Environment.GetEnvironmentVariable("OpenAIAPI_Org")));
+
+var v1 = await openAIAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync("cat"));
+//var json1 = JsonSerializer.Serialize(v1);
+//File.WriteAllText("cat.json", json1);
+
+var v2 = await openAIAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync("kitten"));
+//var json2 = JsonSerializer.Serialize(v2);
+//File.WriteAllText("kitten.json", json2);
+
 var s1 = CalculateCosineSimilarity(v1, v2);
 Console.WriteLine(s1);
 

@@ -30,9 +30,7 @@ internal class RedisDatabaseService : IRedisDatabaseService
     {
         var items = parts.Select((part, idx) => new { idx, part }).ToArray();
 
-        var options = new ParallelOptions { MaxDegreeOfParallelism = 2 };
-
-        await Parallel.ForEachAsync(items, options, async (x, _) =>
+        foreach (var x in items)
         {
             Console.WriteLine("{0}/{1}", x.idx, parts.Count);
 
@@ -52,37 +50,15 @@ internal class RedisDatabaseService : IRedisDatabaseService
                 new(new RedisValue("tokens"), tokens.Count),
                 new(new RedisValue("embedding"), byteArray)
             });
-        });
-
-        //foreach (var x in parts.Select((part, idx) => new { idx, part }))
-        //{
-        //    Console.WriteLine("{0}/{1}", x.idx, parts.Count);
-
-        //    var embeddingTask = embeddingFunc(x.part);
-        //    var tokenTask = Task.Run(() => _encoding.Encode(x.part));
-
-        //    await Task.WhenAll(embeddingTask, tokenTask);
-
-        //    var embeddings = await embeddingTask;
-        //    var tokens = await tokenTask;
-        //    var byteArray = MemoryMarshal.Cast<float, byte>(embeddings).ToArray();
-
-        //    _db.Value.HashSet($"{prefix}:{x.idx}", new HashEntry[]
-        //    {
-        //        new(new RedisValue("idx"), x.idx),
-        //        new(new RedisValue("text"), x.part),
-        //        new(new RedisValue("tokens"), tokens.Count),
-        //        new(new RedisValue("embedding"), byteArray)
-        //    });
-        //}
+        };
 
         await CreateRedisIndexAsync(indexName, prefix);
     }
 
-    public async Task<IReadOnlyList<VectorDocument>> SearchAsync(string indexName, byte[] vector)
+    public async Task<IReadOnlyList<VectorDocument>> SearchAsync(string indexName, byte[] vectorAsBytes)
     {
-        var query = new Query("*=>[KNN 5 @embedding $vector AS vector_score]")
-            .AddParam("vector", vector)
+        var query = new Query("*=>[KNN 5 @embedding $vectorAsBytes AS vector_score]")
+            .AddParam("vectorAsBytes", vectorAsBytes)
             .ReturnFields("idx", "embedding", "text", "vector_score")
             .SetSortBy("vector_score")
             .Dialect(2);
@@ -101,13 +77,6 @@ internal class RedisDatabaseService : IRedisDatabaseService
             .ToArray();
 
         return sortedDocuments;
-
-        //var properties = document.GetProperties().ToArray();
-        //var idx = (int)properties.First(p => p.Key == "idx").Value;
-        // var text = (string?)document["text"];
-        //var score = (float) properties.First(p => p.Key == "vector_score").Value;
-        //var embedding = (byte[]) properties.First(p => p.Key == "embedding").Value!;
-        //var embeddingArray = MemoryMarshal.Cast<byte, float>(embedding).ToArray();
     }
 
     private async Task CreateRedisIndexAsync(string indexName, string prefix)

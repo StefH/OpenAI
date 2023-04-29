@@ -1,30 +1,31 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using LangChain.Example.PDFUtils;
-using LangChain.Example.Redis;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
+using PdfCosineSearch.Models;
 using SharpToken;
 
-namespace LangChain.Example;
+namespace PdfCosineSearch;
 
 internal class MainService : IMainService
 {
     private const int MaxTokenLength = 4096;
     private const int MaxTokenLengthGpt4 = 8192;
     private readonly GptEncoding _encoding = GptEncoding.GetEncoding("cl100k_base");
-    private const string NullAnswer = "NULL";
+    // private const string NullAnswer = "NULL";
 
     private readonly ILogger<MainService> _logger;
     private readonly IDocumentSplitter _documentSplitter;
-    private readonly IRedisDatabaseService _dataInserter;
     private readonly IOpenAIAPI _openAiAPI;
+    private readonly CosineSearchContext _dbContext;
 
-    public MainService(ILogger<MainService> logger, IDocumentSplitter documentSplitter, IRedisDatabaseService dataInserter, IOpenAIAPI openAiAPI)
+    public MainService(ILogger<MainService> logger, IDocumentSplitter documentSplitter, CosineSearchContext dbContext, IOpenAIAPI openAiAPI)
     {
         _logger = logger;
         _documentSplitter = documentSplitter;
-        _dataInserter = dataInserter;
+        _dbContext = dbContext;
         _openAiAPI = openAiAPI;
     }
 
@@ -49,7 +50,6 @@ internal class MainService : IMainService
         }
 
         var questionAsVector = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
-        var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
 
         var canUseGpt4 = await CanUseGPT4Async() && false;
 
@@ -60,14 +60,11 @@ internal class MainService : IMainService
         }
 
         var prefix = Path.GetFileNameWithoutExtension(filePath);
-        var indexName = $"{prefix}-index";
+        // var indexName = $"{prefix}-index";
 
-        if (!_dataInserter.DoesDataExists(prefix))
-        {
-            await AddDataAsync(filePath, indexName, prefix);
-        }
+        await AddDataAsync(filePath, prefix);
 
-        var vectorDocuments = await _dataInserter.SearchAsync(indexName, questionAsBytes);
+        var vectorDocuments = await _dbContext.SearchAsync(prefix, questionAsVector);
         var textBuilder = new StringBuilder();
 
         int tokenLength = 0;
@@ -138,46 +135,17 @@ internal class MainService : IMainService
         var models = await _openAiAPI.Models.WithRetry(modelsEndpoint => modelsEndpoint.GetModelsAsync());
         return models.Any(m => m.ModelID == "gpt-4");
     }
-
-    //private static async IAsyncEnumerable<string> FilterResponseAsync(IAsyncEnumerable<string> inputEnumerable)
-    //{
-    //    var combinedText = new StringBuilder();
-    //    bool isFirstElement = true;
-
-    //    await foreach (var text in inputEnumerable)
-    //    {
-    //        if (isFirstElement)
-    //        {
-    //            combinedText.Append(text);
-    //            if (combinedText.Length >= NullAnswer.Length)
-    //            {
-    //                if (combinedText.ToString()[..NullAnswer.Length] == NullAnswer)
-    //                {
-    //                    combinedText.Remove(0, NullAnswer.Length);
-    //                }
-
-    //                isFirstElement = false;
-
-    //                if (combinedText.Length > 0)
-    //                {
-    //                    yield return combinedText.ToString();
-    //                    combinedText.Clear();
-    //                }
-    //            }
-    //        }
-    //        else
-    //        {
-    //            yield return text;
-    //        }
-    //    }
-    //}
-
-    private async Task AddDataAsync(string filePath, string indexName, string prefix)
+    
+    private async Task AddDataAsync(string filePath, string prefix)
     {
+        if (await _dbContext.HashEntries.AnyAsync(h => h.Prefix == prefix))
+        {
+            return;
+        }
+
         var parts = _documentSplitter.Split(filePath);
 
-        await _dataInserter.InsertAsync(
-            indexName: indexName,
+        await _dbContext.InsertAsync(
             prefix: prefix,
             parts,
             embeddingFunc: input => _openAiAPI.Embeddings.WithRetry(embeddings => embeddings.GetEmbeddingsAsync(input)),

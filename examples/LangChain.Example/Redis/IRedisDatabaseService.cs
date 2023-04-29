@@ -8,5 +8,5 @@ internal interface IRedisDatabaseService
 
     Task InsertAsync(string indexName, string prefix, IReadOnlyList<string> parts, Func<string, Task<float[]>> embeddingFunc, Func<string, Task<IReadOnlyList<int>>> tokenFunc);
 
-    Task<IReadOnlyList<VectorDocument>> SearchAsync(string indexName, byte[] vector);
+    Task<IReadOnlyList<VectorDocument>> SearchAsync(string indexName, byte[] vectorAsBytes);
 }
