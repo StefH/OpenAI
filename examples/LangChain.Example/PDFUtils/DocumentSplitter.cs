@@ -24,7 +24,7 @@ internal class DocumentSplitter : IDocumentSplitter
 
         var lines = SplitToLines(stringBuilder);
 
-        return GetChunks(lines);
+        return GetChunks(lines).Where(line => !string.IsNullOrEmpty(line)).ToArray();
     }
 
     private static string[] SplitToLines(StringBuilder stringBuilder)

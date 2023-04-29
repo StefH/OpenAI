@@ -56,6 +56,7 @@ internal class MainService : IMainService
         var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
         if (canUseGpt4)
         {
+            _logger.LogInformation("Using GPT-4");
             chat.Model = "gpt-4";
         }
 

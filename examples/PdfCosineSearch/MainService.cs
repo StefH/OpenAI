@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Text;
 using LangChain.Example.PDFUtils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -56,6 +55,7 @@ internal class MainService : IMainService
         var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
         if (canUseGpt4)
         {
+            _logger.LogInformation("Using GPT-4");
             chat.Model = "gpt-4";
         }
 

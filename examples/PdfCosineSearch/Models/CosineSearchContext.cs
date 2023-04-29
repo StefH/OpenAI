@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using LangChain.Example.Redis.Models;
 using MathNet.Numerics.LinearAlgebra;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ public class CosineSearchContext : DbContext
     //{
     //}
 
-    public virtual DbSet<HashEntry> HashEntries { get; set; }
+    public virtual DbSet<HashEntry> HashEntries { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CosineSearch;Trusted_Connection=True;");
@@ -36,8 +37,6 @@ public class CosineSearchContext : DbContext
 
     // partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-
-
     public async Task<IReadOnlyList<VectorDocument>> SearchAsync(string prefix, float[] questionAsVector)
     {
         var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
@@ -45,7 +44,7 @@ public class CosineSearchContext : DbContext
 
         var hashEntries = await HashEntries.Where(h => h.Prefix == prefix).ToArrayAsync();
 
-        var searchResult = new List<(HashEntry HashEntry, double CosineSimilarity)>();
+        var searchResult = new ConcurrentBag<(HashEntry HashEntry, double CosineSimilarity)>();
         Parallel.ForEach(hashEntries, hashEntry =>
         {
             var embeddingVectorAsFloats = MemoryMarshal.Cast<byte, float>(hashEntry.EmbeddingAsBinary).ToArray();
@@ -81,31 +80,30 @@ public class CosineSearchContext : DbContext
     {
         var items = parts.Select((part, idx) => new { idx, part }).ToArray();
 
-        foreach (var x in items)
+        foreach (var item in items)
         {
-            Console.WriteLine("{0}/{1}", x.idx, parts.Count);
+            Console.WriteLine("{0}/{1}", item.idx, parts.Count);
 
-            var embeddingTask = embeddingFunc(x.part);
-            var tokenTask = tokenFunc(x.part);
+            var embeddingTask = embeddingFunc(item.part);
+            var tokenTask = tokenFunc(item.part);
 
             await Task.WhenAll(embeddingTask, tokenTask);
 
             var embeddings = await embeddingTask;
             var tokens = await tokenTask;
-            var byteArray = MemoryMarshal.Cast<float, byte>(embeddings).ToArray();
 
             var hashEntry = new HashEntry
             {
                 Prefix = prefix,
-                Index = x.idx,
-                Text = x.part,
+                Index = item.idx,
+                Text = item.part,
                 Tokens = tokens.Count,
-                EmbeddingAsBinary = byteArray
+                EmbeddingAsBinary = MemoryMarshal.Cast<float, byte>(embeddings).ToArray()
             };
 
             await HashEntries.AddAsync(hashEntry);
 
-            if (x.idx % 10 == 0)
+            if (item.idx % 10 == 0)
             {
                 await SaveChangesAsync();
             }
