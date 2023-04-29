@@ -60,7 +60,6 @@ internal class MainService : IMainService
         }
 
         var prefix = Path.GetFileNameWithoutExtension(filePath);
-        // var indexName = $"{prefix}-index";
 
         await AddDataAsync(filePath, prefix);
 

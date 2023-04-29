@@ -94,18 +94,6 @@ internal class MainService : IMainService
         contentBuilder.AppendLine(@"- Only base your answer on the source text");
         contentBuilder.AppendLine(@"- When you cannot give a good answer based on the source text, return ""I cannot find any relevant information.""");
 
-        /*
-        contentBuilder.AppendLine(@"Based on the source text answer the question and follow the next requirements:");
-
-        contentBuilder.AppendLine(@"- Make sure to give a concrete answer");
-        contentBuilder.AppendLine(@"- Do not start your answer with ""Based on the source text,""");
-        contentBuilder.AppendLine(@"- Only base your answer on the source text");
-        contentBuilder.AppendLine(@"- When you cannot give a good answer based on the text, return ""I cannot find any relevant information.""");
-
-        contentBuilder.AppendLine($"source text: \"{textBuilder}\"");
-        contentBuilder.AppendLine($"question: \"{question}\"");*/
-
-        //chat.WithRetry(c => c.AppendUserInput(contentBuilder.ToString()));
         chat.AppendUserInput(contentBuilder.ToString());
 
         var response = await chat.WithRetry(conversation => conversation.GetResponseFromChatbotAsync());
@@ -133,7 +121,7 @@ internal class MainService : IMainService
         Console.WriteLine();
         Console.WriteLine();
     }
-    
+
     private async Task<bool> CanUseGPT4Async()
     {
         var models = await _openAiAPI.Models.WithRetry(modelsEndpoint => modelsEndpoint.GetModelsAsync());
@@ -175,12 +163,12 @@ internal class MainService : IMainService
 
     private async Task AddDataAsync(string filePath, string indexName, string prefix)
     {
-        var parts = _documentSplitter.Split(filePath);
+        var textFragments = _documentSplitter.Split(filePath);
 
         await _dataInserter.InsertAsync(
             indexName: indexName,
             prefix: prefix,
-            parts,
+            textFragments,
             embeddingFunc: input => _openAiAPI.Embeddings.WithRetry(embeddings => embeddings.GetEmbeddingsAsync(input)),
             tokenFunc: async input => await Task.Run(() => _encoding.Encode(input))
         );

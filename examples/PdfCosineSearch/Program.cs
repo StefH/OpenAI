@@ -22,6 +22,9 @@ internal class Program
             .ConfigureLogging(logging =>
             {
                 logging.ClearProviders();
+
+                logging.SetMinimumLevel(LogLevel.Debug);
+
                 logging.AddConsole();
 
                 logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
@@ -30,9 +33,9 @@ internal class Program
 
         var service = host.Services.GetRequiredService<IMainService>();
 
-        // await RunAzureDevOpsTestsAsync(service);
+        await RunAzureDevOpsTestsAsync(service);
         await RunDataScienceTestsAsync(service);
-        // await RunBlazorTestsAsync(service);
+        await RunBlazorTestsAsync(service);
     }
 
     private static async Task RunBlazorTestsAsync(IMainService service)

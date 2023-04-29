@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using LangChain.Example.Redis.Models;
+using Microsoft.Extensions.Logging;
 using NRedisStack.RedisStackCommands;
 using NRedisStack.Search;
 using StackExchange.Redis;
@@ -8,10 +9,12 @@ namespace LangChain.Example.Redis;
 
 internal class RedisDatabaseService : IRedisDatabaseService
 {
+    private readonly ILogger<RedisDatabaseService> _logger;
     private readonly Lazy<IDatabase> _db;
 
-    public RedisDatabaseService(IConnectionMultiplexer connection)
+    public RedisDatabaseService(ILogger<RedisDatabaseService> logger, IConnectionMultiplexer connection)
     {
+        _logger = logger;
         _db = new Lazy<IDatabase>(connection.GetDatabase());
     }
 
@@ -23,30 +26,29 @@ internal class RedisDatabaseService : IRedisDatabaseService
     public async Task InsertAsync(
         string indexName,
         string prefix,
-        IReadOnlyList<string> parts,
+        IReadOnlyList<string> textFragments,
         Func<string, Task<float[]>> embeddingFunc,
         Func<string, Task<IReadOnlyList<int>>> tokenFunc
     )
     {
-        var items = parts.Select((part, idx) => new { idx, part }).ToArray();
-
-        foreach (var x in items)
+        foreach (var items in textFragments.Select((textFragment, idx) => new { idx, textFragment }))
         {
-            Console.WriteLine("{0}/{1}", x.idx, parts.Count);
+            _logger.LogInformation("Inserting {idx}/{count}", items.idx, textFragments.Count);
 
-            var embeddingTask = embeddingFunc(x.part);
-            var tokenTask = tokenFunc(x.part);
+            var embeddingTask = embeddingFunc(items.textFragment);
+            var tokenTask = tokenFunc(items.textFragment);
 
             await Task.WhenAll(embeddingTask, tokenTask);
 
             var embeddings = await embeddingTask;
             var tokens = await tokenTask;
+
             var byteArray = MemoryMarshal.Cast<float, byte>(embeddings).ToArray();
 
-            _db.Value.HashSet($"{prefix}:{x.idx}", new HashEntry[]
+            _db.Value.HashSet($"{prefix}:{items.idx}", new HashEntry[]
             {
-                new(new RedisValue("idx"), x.idx),
-                new(new RedisValue("text"), x.part),
+                new(new RedisValue("idx"), items.idx),
+                new(new RedisValue("text"), items.textFragment),
                 new(new RedisValue("tokens"), tokens.Count),
                 new(new RedisValue("embedding"), byteArray)
             });
@@ -57,6 +59,8 @@ internal class RedisDatabaseService : IRedisDatabaseService
 
     public async Task<IReadOnlyList<VectorDocument>> SearchAsync(string indexName, byte[] vectorAsBytes)
     {
+        _logger.LogInformation("Doing a search for index {index}", indexName);
+
         var query = new Query("*=>[KNN 5 @embedding $vectorAsBytes AS vector_score]")
             .AddParam("vectorAsBytes", vectorAsBytes)
             .ReturnFields("idx", "embedding", "text", "vector_score")
@@ -81,14 +85,16 @@ internal class RedisDatabaseService : IRedisDatabaseService
 
     private async Task CreateRedisIndexAsync(string indexName, string prefix)
     {
+        _logger.LogInformation("Creating index {indexName} for prefix {prefix}", indexName, prefix);
+
         var schema = new Schema()
             .AddNumericField("idx")
             .AddVectorField("embedding", Schema.VectorField.VectorAlgo.HNSW,
                 new Dictionary<string, object>
                 {
-                { "TYPE", "FLOAT32" },
-                { "DIM", "1536" },
-                { "DISTANCE_METRIC", "COSINE" }
+                    { "TYPE", "FLOAT32" },
+                    { "DIM", "1536" },
+                    { "DISTANCE_METRIC", "COSINE" }
                 }
             );
 

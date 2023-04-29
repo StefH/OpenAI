@@ -3,15 +3,19 @@ using System.Runtime.InteropServices;
 using LangChain.Example.Redis.Models;
 using MathNet.Numerics.LinearAlgebra;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PdfCosineSearch.Math;
 
 namespace PdfCosineSearch.Models;
 
 public class CosineSearchContext : DbContext
 {
-    //public CosineSearchContext()
-    //{
-    //}
+    private readonly ILogger<CosineSearchContext> _logger;
+
+    public CosineSearchContext(ILogger<CosineSearchContext> logger)
+    {
+        _logger = logger;
+    }
 
     //public CosineSearchContext(DbContextOptions<CosineSearchContext> options)
     //    : base(options)
@@ -39,6 +43,8 @@ public class CosineSearchContext : DbContext
 
     public async Task<IReadOnlyList<VectorDocument>> SearchAsync(string prefix, float[] questionAsVector)
     {
+        _logger.LogInformation("Doing a search for prefix {prefix}", prefix);
+
         var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
         var (questionVector, questionMagnitude) = MathHelper.GetQuestionVectorData(questionAsBytes);
 
@@ -73,32 +79,32 @@ public class CosineSearchContext : DbContext
 
     public async Task InsertAsync(
         string prefix,
-        IReadOnlyList<string> parts,
+        IReadOnlyList<string> textFragments,
         Func<string, Task<float[]>> embeddingFunc,
         Func<string, Task<IReadOnlyList<int>>> tokenFunc
     )
     {
-        var items = parts.Select((part, idx) => new { idx, part }).ToArray();
-
-        foreach (var item in items)
+        foreach (var item in textFragments.Select((textFragment, idx) => new { idx, textFragment }))
         {
-            Console.WriteLine("{0}/{1}", item.idx, parts.Count);
+            _logger.LogInformation("Inserting {idx}/{count}", item.idx, textFragments.Count);
 
-            var embeddingTask = embeddingFunc(item.part);
-            var tokenTask = tokenFunc(item.part);
+            var embeddingTask = embeddingFunc(item.textFragment);
+            var tokenTask = tokenFunc(item.textFragment);
 
             await Task.WhenAll(embeddingTask, tokenTask);
 
             var embeddings = await embeddingTask;
             var tokens = await tokenTask;
 
+            var embeddingAsBinary = MemoryMarshal.Cast<float, byte>(embeddings).ToArray();
+
             var hashEntry = new HashEntry
             {
                 Prefix = prefix,
                 Index = item.idx,
-                Text = item.part,
+                Text = item.textFragment,
                 Tokens = tokens.Count,
-                EmbeddingAsBinary = MemoryMarshal.Cast<float, byte>(embeddings).ToArray()
+                EmbeddingAsBinary = embeddingAsBinary
             };
 
             await HashEntries.AddAsync(hashEntry);
