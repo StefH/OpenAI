@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextSplitter.Tests", "examp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject1", "examples\TestProject1\TestProject1.csproj", "{31618F87-A559-4CF8-A2C2-C80873BDAD35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfCosineSearch", "examples\PdfCosineSearch\PdfCosineSearch.csproj", "{A2BDA8DE-9F34-463B-A0E1-AD6B177842F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfCosineSearch", "examples\PdfCosineSearch\PdfCosineSearch.csproj", "{A2BDA8DE-9F34-463B-A0E1-AD6B177842F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfCosineSearch.Sqlite", "examples\PdfCosineSearch.Sqlite\PdfCosineSearch.Sqlite.csproj", "{6B3F755B-67EA-4FD6-99E4-98BC734EC228}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{A2BDA8DE-9F34-463B-A0E1-AD6B177842F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2BDA8DE-9F34-463B-A0E1-AD6B177842F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2BDA8DE-9F34-463B-A0E1-AD6B177842F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B3F755B-67EA-4FD6-99E4-98BC734EC228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B3F755B-67EA-4FD6-99E4-98BC734EC228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B3F755B-67EA-4FD6-99E4-98BC734EC228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B3F755B-67EA-4FD6-99E4-98BC734EC228}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{CB0806F7-5460-4CCD-B1FA-301A401F3231} = {C7979547-CE62-4867-9193-515930DAB839}
 		{31618F87-A559-4CF8-A2C2-C80873BDAD35} = {C7979547-CE62-4867-9193-515930DAB839}
 		{A2BDA8DE-9F34-463B-A0E1-AD6B177842F3} = {C7979547-CE62-4867-9193-515930DAB839}
+		{6B3F755B-67EA-4FD6-99E4-98BC734EC228} = {C7979547-CE62-4867-9193-515930DAB839}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7B3F524-4422-4188-9E39-03C5A698219E}

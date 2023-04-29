@@ -7,6 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);MSSQL</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\LangChain.Example\PDFUtils\DocumentSplitter.cs" Link="PDFUtils\DocumentSplitter.cs" />
     <Compile Include="..\LangChain.Example\PDFUtils\IDocumentSplitter.cs" Link="PDFUtils\IDocumentSplitter.cs" />

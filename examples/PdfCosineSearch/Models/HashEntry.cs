@@ -1,6 +1,6 @@
 ﻿namespace PdfCosineSearch.Models;
 
-public partial class HashEntry
+public class HashEntry
 {
     public int Id { get; set; }
 

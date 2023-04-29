@@ -18,6 +18,7 @@ public static partial class OpenAIAPIExtensions
     private const int DefaultTimeOutInSeconds = 20;
     private const int MaxRetries = 10;
     private static readonly Regex RateLimitReachedRegex = new("Rate limit reached", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    private static readonly Regex PleaseRetryYourRequestRegex = new("Please retry your request", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     private static readonly Regex PleaseTryAgainRegex = new(@"Please try again in (\d+)s\.", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     private static readonly ILogger Logger = ServiceLocator.GetService<ILoggerFactory>().Value?.CreateLogger(nameof(OpenAIAPIExtensions)) ?? new DebugLogger(nameof(OpenAIAPIExtensions));
@@ -36,16 +37,16 @@ public static partial class OpenAIAPIExtensions
     }
 
     private static readonly AsyncRetryPolicy AsyncRetryPolicy = Policy
-        .Handle<HttpRequestException>(IsRateLimitReachedException)
+        .Handle<HttpRequestException>(IsExceptionRetryable)
         .WaitAndRetryAsync(MaxRetries, SleepDurationProvider, OnRetryAsync);
 
     private static readonly Policy RetryPolicy = Policy
-        .Handle<HttpRequestException>(IsRateLimitReachedException)
+        .Handle<HttpRequestException>(IsExceptionRetryable)
         .WaitAndRetry(MaxRetries, SleepDurationProvider, OnRetry);
 
-    private static bool IsRateLimitReachedException(HttpRequestException httpException)
+    private static bool IsExceptionRetryable(HttpRequestException httpException)
     {
-        return RateLimitReachedRegex.IsMatch(httpException.Message);
+        return RateLimitReachedRegex.IsMatch(httpException.Message) || PleaseRetryYourRequestRegex.IsMatch(httpException.Message);
     }
 
     private static TimeSpan SleepDurationProvider(int retryAttempt, Exception exception, Context context)

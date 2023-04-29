@@ -25,13 +25,27 @@ public class CosineSearchContext : DbContext
     public virtual DbSet<HashEntry> HashEntries { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CosineSearch;Trusted_Connection=True;");
+    {
+#if MSSQL
+        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CosineSearch;Trusted_Connection=True;");
+#elif SQLITE
+        optionsBuilder.UseSqlite("Data Source=../../../CosineSearch.db");
+#else
+        throw new Exception("No database provider specified");
+#endif
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<HashEntry>(entity =>
         {
+#if MSSQL
             entity.HasKey(e => e.Id).HasName("PK__HashEntr__3214EC0723A933CF");
+#elif SQLITE
+            entity.HasKey(e => e.Id);
+#else
+            throw new Exception("No database provider specified");
+#endif
 
             entity.Property(e => e.Prefix).HasMaxLength(128);
         });
@@ -48,7 +62,10 @@ public class CosineSearchContext : DbContext
         var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
         var (questionVector, questionMagnitude) = MathHelper.GetQuestionVectorData(questionAsBytes);
 
-        var hashEntries = await HashEntries.Where(h => h.Prefix == prefix).ToArrayAsync();
+        var hashEntries = await HashEntries
+            .AsNoTracking()
+            .Where(h => h.Prefix == prefix)
+            .ToArrayAsync();
 
         var searchResult = new ConcurrentBag<(HashEntry HashEntry, double CosineSimilarity)>();
         Parallel.ForEach(hashEntries, hashEntry =>
