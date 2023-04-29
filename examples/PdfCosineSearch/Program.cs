@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
+using OpenAI_API.DependencyInjection;
 using PdfCosineSearch.Models;
 
 namespace PdfCosineSearch;
@@ -30,6 +31,8 @@ internal class Program
                 logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
             })
             .Build();
+
+        host.Services.UseOpenAIWithPolly();
 
         var service = host.Services.GetRequiredService<IMainService>();
 
