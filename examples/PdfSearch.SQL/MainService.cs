@@ -51,7 +51,7 @@ internal class MainService : IMainService
 
         var questionAsVector = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
 
-        var canUseGpt4 = await CanUseGPT4Async() && false;
+        var canUseGpt4 = await CanUseGPT4Async() && false; // disable GPT-4 for now
 
         var chat = _openAiAPI.Chat.WithRetry(chatEndpoint => chatEndpoint.CreateConversation());
         if (canUseGpt4)

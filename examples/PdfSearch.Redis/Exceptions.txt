@@ -27,3 +27,12 @@ OpenAI had an internal server error, which can happen occasionally.  Please retr
     "code": null
   }
 }
+
+Unhandled exception. System.Net.Http.HttpRequestException: Error at chat/completions (https://api.openai.com/v1/chat/completions) with HTTP status code: TooManyRequests. Content: {
+  "error": {
+    "message": "That model is currently overloaded with other requests. You can retry your request, or contact us through our help center at help.openai.com if the error persists. (Please include the request ID ae23904bb1241e0738e6e07aac622d48 in your message.)",
+    "type": "server_error",
+    "param": null,
+    "code": null
+  }
+}

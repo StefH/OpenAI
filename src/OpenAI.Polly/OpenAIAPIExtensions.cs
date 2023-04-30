@@ -19,6 +19,7 @@ public static partial class OpenAIAPIExtensions
     private const int MaxRetries = 10;
     private static readonly Regex RateLimitReachedRegex = new("Rate limit reached", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     private static readonly Regex PleaseRetryYourRequestRegex = new("Please retry your request", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    private static readonly Regex TooManyRequestsRegex = new("TooManyRequests", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     private static readonly Regex PleaseTryAgainRegex = new(@"Please try again in (\d+)s\.", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     private static readonly Lazy<ILogger> Logger = new(() => ServiceLocator.GetService<ILoggerFactory>().Value?.CreateLogger(nameof(OpenAIAPIExtensions)) ?? new DebugLogger(nameof(OpenAIAPIExtensions)));
@@ -46,7 +47,9 @@ public static partial class OpenAIAPIExtensions
 
     private static bool IsExceptionRetryable(HttpRequestException httpException)
     {
-        return RateLimitReachedRegex.IsMatch(httpException.Message) || PleaseRetryYourRequestRegex.IsMatch(httpException.Message);
+        return RateLimitReachedRegex.IsMatch(httpException.Message) || 
+               PleaseRetryYourRequestRegex.IsMatch(httpException.Message) ||
+               TooManyRequestsRegex.IsMatch(httpException.Message);
     }
 
     private static TimeSpan SleepDurationProvider(int retryAttempt, Exception exception, Context context)
