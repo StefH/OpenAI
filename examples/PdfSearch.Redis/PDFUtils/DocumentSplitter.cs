@@ -12,24 +12,24 @@ internal class DocumentSplitter : IDocumentSplitter
     private static readonly char[] SplitChars = { Dot, '\r', '\n' };
     private static readonly Regex LineSplitRegex = new ($"(.{{1,{MaxCharactersPerTextFragment}}}(?=\\s|$))", RegexOptions.Compiled);
 
-    public IReadOnlyList<string> Split(string filePath)
+public IReadOnlyList<string> Split(string filePath)
+{
+    var stringBuilder = new StringBuilder();
+
+    using (var document = PdfDocument.Open(filePath))
     {
-        var stringBuilder = new StringBuilder();
-
-        using (var document = PdfDocument.Open(filePath))
+        foreach (var page in document.GetPages().Where(p => !string.IsNullOrWhiteSpace(p.Text)))
         {
-            foreach (var page in document.GetPages().Where(p => !string.IsNullOrWhiteSpace(p.Text)))
-            {
-                stringBuilder.Append(page.Text.Trim());
-            }
+            stringBuilder.Append(page.Text.Trim());
         }
-
-        var lines = SplitToLines(stringBuilder);
-
-        return GetTextFragments(lines)
-            .Where(line => !string.IsNullOrEmpty(line))
-            .ToArray();
     }
+
+    var lines = SplitToLines(stringBuilder);
+
+    return GetTextFragments(lines)
+        .Where(line => !string.IsNullOrWhiteSpace(line))
+        .ToArray();
+}
 
     private static string[] SplitToLines(StringBuilder stringBuilder)
     {
@@ -46,7 +46,7 @@ internal class DocumentSplitter : IDocumentSplitter
                 {
                     var extraLines = LineSplitRegex
                         .Split(line) // Split the line using the Regex.
-                        .Where(extraLine => !string.IsNullOrEmpty(extraLine)) // Remove empty lines.
+                        .Where(extraLine => !string.IsNullOrWhiteSpace(extraLine)) // Remove empty lines.
                         .Select(extraLine => extraLine.Trim()) // Trim the line.
                         .ToArray();
 
