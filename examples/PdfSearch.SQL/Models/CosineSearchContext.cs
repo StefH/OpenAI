@@ -1,12 +1,12 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using LangChain.Example.Redis.Models;
 using MathNet.Numerics.LinearAlgebra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PdfCosineSearch.Math;
+using PdfSearch.Redis.Database.Models;
+using PdfSearch.SQL.Math;
 
-namespace PdfCosineSearch.Models;
+namespace PdfSearch.SQL.Models;
 
 public class CosineSearchContext : DbContext
 {

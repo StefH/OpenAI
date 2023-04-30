@@ -17,8 +17,4 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LangChain.Example\LangChain.Example.csproj" />
-  </ItemGroup>
-
 </Project>

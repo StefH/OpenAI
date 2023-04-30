@@ -1,13 +1,13 @@
 ﻿using System.Text;
-using LangChain.Example.PDFUtils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
 using OpenAI_API.Polly;
-using PdfCosineSearch.Models;
+using PdfSearch.Redis.PDFUtils;
+using PdfSearch.SQL.Models;
 using SharpToken;
 
-namespace PdfCosineSearch;
+namespace PdfSearch.SQL;
 
 internal class MainService : IMainService
 {

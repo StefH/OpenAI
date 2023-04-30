@@ -1,12 +1,12 @@
-﻿using LangChain.Example.PDFUtils;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
 using OpenAI_API.Polly.DependencyInjection;
-using PdfCosineSearch.Models;
+using PdfSearch.Redis.PDFUtils;
+using PdfSearch.SQL.Models;
 
-namespace PdfCosineSearch;
+namespace PdfSearch.SQL;
 
 internal class Program
 {

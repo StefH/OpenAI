@@ -8,13 +8,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);MSSQL</DefineConstants>
+    <DefineConstants>$(DefineConstants);SQLITE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\LangChain.Example\PDFUtils\DocumentSplitter.cs" Link="PDFUtils\DocumentSplitter.cs" />
-    <Compile Include="..\LangChain.Example\PDFUtils\IDocumentSplitter.cs" Link="PDFUtils\IDocumentSplitter.cs" />
-    <Compile Include="..\LangChain.Example\Redis\Models\VectorDocument.cs" Link="Models\VectorDocument.cs" />
+    <Compile Include="..\PdfSearch.Redis\PDFUtils\DocumentSplitter.cs" Link="PDFUtils\DocumentSplitter.cs" />
+    <Compile Include="..\PdfSearch.Redis\PDFUtils\IDocumentSplitter.cs" Link="PDFUtils\IDocumentSplitter.cs" />
+    <Compile Include="..\PdfSearch.Redis\Database\Models\VectorDocument.cs" Link="Models\VectorDocument.cs" />
+    <Compile Include="..\PdfSearch.SQL\IMainService.cs" Link="IMainService.cs" />
+    <Compile Include="..\PdfSearch.SQL\MainService.cs" Link="MainService.cs" />
+    <Compile Include="..\PdfSearch.SQL\Math\MathHelper.cs" Link="Math\MathHelper.cs" />
+    <Compile Include="..\PdfSearch.SQL\Models\CosineSearchContext.cs" Link="Models\CosineSearchContext.cs" />
+    <Compile Include="..\PdfSearch.SQL\Models\HashEntry.cs" Link="Models\HashEntry.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,12 +27,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
@@ -43,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Math\" />
     <Folder Include="PDFUtils\" />
   </ItemGroup>
 

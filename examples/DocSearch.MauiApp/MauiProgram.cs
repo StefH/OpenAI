@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Maui;
-using LangChain.Example;
-using LangChain.Example.PDFUtils;
-using LangChain.Example.Redis;
 using Microsoft.Extensions.Configuration;
 using OpenAI_API;
+using PdfSearch.Redis;
+using PdfSearch.Redis.Database;
+using PdfSearch.Redis.PDFUtils;
 using StackExchange.Redis;
 
 namespace DocSearch.MauiApp;

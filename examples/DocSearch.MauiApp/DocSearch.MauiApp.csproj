@@ -50,13 +50,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\LangChain.Example\IMainService.cs" Link="Services\IMainService.cs" />
-    <Compile Include="..\LangChain.Example\MainService.cs" Link="Services\MainService.cs" />
-    <Compile Include="..\LangChain.Example\PDFUtils\DocumentSplitter.cs" Link="Services\DocumentSplitter.cs" />
-    <Compile Include="..\LangChain.Example\PDFUtils\IDocumentSplitter.cs" Link="Services\IDocumentSplitter.cs" />
-    <Compile Include="..\LangChain.Example\Redis\IRedisDatabaseService.cs" Link="Services\IRedisDatabaseService.cs" />
-    <Compile Include="..\LangChain.Example\Redis\Models\VectorDocument.cs" Link="Models\VectorDocument.cs" />
-    <Compile Include="..\LangChain.Example\Redis\RedisDatabaseService.cs" Link="Services\RedisDatabaseService.cs" />
+    <Compile Include="..\PdfSearch.Redis\IMainService.cs" Link="Services\IMainService.cs" />
+    <Compile Include="..\PdfSearch.Redis\MainService.cs" Link="Services\MainService.cs" />
+    <Compile Include="..\PdfSearch.Redis\PDFUtils\DocumentSplitter.cs" Link="Services\DocumentSplitter.cs" />
+    <Compile Include="..\PdfSearch.Redis\PDFUtils\IDocumentSplitter.cs" Link="Services\IDocumentSplitter.cs" />
+    <Compile Include="..\PdfSearch.Redis\Database\IRedisDatabaseService.cs" Link="Services\IRedisDatabaseService.cs" />
+    <Compile Include="..\PdfSearch.Redis\Database\Models\VectorDocument.cs" Link="Models\VectorDocument.cs" />
+    <Compile Include="..\PdfSearch.Redis\Database\RedisDatabaseService.cs" Link="Services\RedisDatabaseService.cs" />
   </ItemGroup>
 
   <ItemGroup>

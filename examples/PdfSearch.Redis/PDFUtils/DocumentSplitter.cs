@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using UglyToad.PdfPig;
 
-namespace LangChain.Example.PDFUtils;
+namespace PdfSearch.Redis.PDFUtils;
 
 internal class DocumentSplitter : IDocumentSplitter
 {

@@ -1,6 +1,6 @@
-﻿using LangChain.Example.Redis.Models;
+﻿using PdfSearch.Redis.Database.Models;
 
-namespace LangChain.Example.Redis;
+namespace PdfSearch.Redis.Database;
 
 internal interface IRedisDatabaseService
 {

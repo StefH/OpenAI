@@ -1,4 +1,4 @@
-﻿namespace PdfCosineSearch.Models;
+﻿namespace PdfSearch.SQL.Models;
 
 public class HashEntry
 {

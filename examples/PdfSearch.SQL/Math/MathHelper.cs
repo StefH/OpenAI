@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace PdfCosineSearch.Math;
+namespace PdfSearch.SQL.Math;
 
 internal static class MathHelper
 {

@@ -1,4 +1,4 @@
-﻿namespace PdfCosineSearch;
+﻿namespace PdfSearch.Redis;
 
 internal interface IMainService
 {

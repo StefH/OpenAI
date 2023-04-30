@@ -1,13 +1,13 @@
-﻿using LangChain.Example.PDFUtils;
-using LangChain.Example.Redis;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
 using OpenAI_API.Polly.DependencyInjection;
+using PdfSearch.Redis.Database;
+using PdfSearch.Redis.PDFUtils;
 using StackExchange.Redis;
 
-namespace LangChain.Example;
+namespace PdfSearch.Redis;
 
 internal static class Program
 {

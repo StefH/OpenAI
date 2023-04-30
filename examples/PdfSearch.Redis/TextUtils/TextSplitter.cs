@@ -1,4 +1,4 @@
-﻿namespace LangChain.Example.TextUtils;
+﻿namespace PdfSearch.Redis.TextUtils;
 
 /// <summary>
 /// Based on https://python.langchain.com/en/latest/_modules/langchain/text_splitter.html

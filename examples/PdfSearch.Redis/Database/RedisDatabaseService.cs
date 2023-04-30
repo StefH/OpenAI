@@ -1,11 +1,11 @@
 ﻿using System.Runtime.InteropServices;
-using LangChain.Example.Redis.Models;
 using Microsoft.Extensions.Logging;
 using NRedisStack.RedisStackCommands;
 using NRedisStack.Search;
+using PdfSearch.Redis.Database.Models;
 using StackExchange.Redis;
 
-namespace LangChain.Example.Redis;
+namespace PdfSearch.Redis.Database;
 
 internal class RedisDatabaseService : IRedisDatabaseService
 {

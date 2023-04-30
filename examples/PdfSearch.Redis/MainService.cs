@@ -1,14 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
-using LangChain.Example.PDFUtils;
-using LangChain.Example.Redis;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
-using OpenAI_API.Chat;
 using OpenAI_API.Polly;
+using PdfSearch.Redis.Database;
+using PdfSearch.Redis.PDFUtils;
 using SharpToken;
 
-namespace LangChain.Example;
+namespace PdfSearch.Redis;
 
 internal class MainService : IMainService
 {

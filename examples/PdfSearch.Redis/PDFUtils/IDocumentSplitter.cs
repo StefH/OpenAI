@@ -1,4 +1,4 @@
-﻿namespace LangChain.Example.PDFUtils;
+﻿namespace PdfSearch.Redis.PDFUtils;
 
 public interface IDocumentSplitter
 {

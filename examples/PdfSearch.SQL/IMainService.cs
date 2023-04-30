@@ -1,4 +1,4 @@
-﻿namespace LangChain.Example;
+﻿namespace PdfSearch.SQL;
 
 internal interface IMainService
 {
