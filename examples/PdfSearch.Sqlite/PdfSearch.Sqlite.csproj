@@ -19,7 +19,7 @@
     <Compile Include="..\PdfSearch.SQL\MainService.cs" Link="MainService.cs" />
     <Compile Include="..\PdfSearch.SQL\Math\MathHelper.cs" Link="Math\MathHelper.cs" />
     <Compile Include="..\PdfSearch.SQL\Models\CosineSearchContext.cs" Link="Models\CosineSearchContext.cs" />
-    <Compile Include="..\PdfSearch.SQL\Models\HashEntry.cs" Link="Models\HashEntry.cs" />
+    <Compile Include="..\PdfSearch.SQL\Models\TextFragment.cs" Link="Models\TextFragment.cs" />
   </ItemGroup>
 
   <ItemGroup>

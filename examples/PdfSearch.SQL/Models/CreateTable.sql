@@ -1,14 +1,14 @@
 ﻿USE [CosineSearch]
 GO
 
-/****** Object: Table [dbo].[HashEntries] Script Date: 30-4-2023 09:16:21 ******/
+/****** Object: Table [dbo].[TextFragments] Script Date: 30-4-2023 09:16:21 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[HashEntries] (
+CREATE TABLE [dbo].[TextFragments] (
     [Id]                INT             IDENTITY (1, 1) NOT NULL,
     [Prefix]            NVARCHAR (128)  NOT NULL,
     [Index]             INT             NOT NULL,

@@ -111,7 +111,7 @@ internal class MainService : IMainService
     
     private async Task AddDataAsync(string filePath, string prefix)
     {
-        if (await _dbContext.HashEntries.AnyAsync(h => h.Prefix == prefix))
+        if (await _dbContext.TextFragments.AnyAsync(h => h.Prefix == prefix))
         {
             return;
         }

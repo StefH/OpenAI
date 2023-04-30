@@ -22,7 +22,7 @@ public class CosineSearchContext : DbContext
     //{
     //}
 
-    public virtual DbSet<HashEntry> HashEntries { get; set; } = null!;
+    public virtual DbSet<TextFragment> TextFragments { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -37,7 +37,7 @@ public class CosineSearchContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<HashEntry>(entity =>
+        modelBuilder.Entity<TextFragment>(entity =>
         {
 #if MSSQL
             entity.HasKey(e => e.Id).HasName("PK__HashEntr__3214EC0723A933CF");
@@ -62,12 +62,12 @@ public class CosineSearchContext : DbContext
         var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
         var (questionVector, questionMagnitude) = MathHelper.GetQuestionVectorData(questionAsBytes);
 
-        var hashEntries = await HashEntries
+        var hashEntries = await TextFragments
             .AsNoTracking()
             .Where(h => h.Prefix == prefix)
             .ToArrayAsync();
 
-        var searchResult = new ConcurrentBag<(HashEntry HashEntry, double CosineSimilarity)>();
+        var searchResult = new ConcurrentBag<(TextFragment HashEntry, double CosineSimilarity)>();
         Parallel.ForEach(hashEntries, hashEntry =>
         {
             var embeddingVectorAsFloats = MemoryMarshal.Cast<byte, float>(hashEntry.EmbeddingAsBinary).ToArray();
@@ -115,7 +115,7 @@ public class CosineSearchContext : DbContext
 
             var embeddingAsBinary = MemoryMarshal.Cast<float, byte>(embeddings).ToArray();
 
-            var hashEntry = new HashEntry
+            var hashEntry = new TextFragment
             {
                 Prefix = prefix,
                 Index = item.idx,
@@ -124,7 +124,7 @@ public class CosineSearchContext : DbContext
                 EmbeddingAsBinary = embeddingAsBinary
             };
 
-            await HashEntries.AddAsync(hashEntry);
+            await TextFragments.AddAsync(hashEntry);
 
             if (item.idx % 10 == 0)
             {
