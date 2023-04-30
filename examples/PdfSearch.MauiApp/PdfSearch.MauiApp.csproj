@@ -56,7 +56,7 @@
     <Compile Include="..\PdfSearch.Redis\PDFUtils\IDocumentSplitter.cs" Link="Services\IDocumentSplitter.cs" />
     <Compile Include="..\PdfSearch.Redis\Database\IRedisDatabaseService.cs" Link="Services\IRedisDatabaseService.cs" />
     <Compile Include="..\PdfSearch.Redis\Database\Models\VectorDocument.cs" Link="Models\VectorDocument.cs" />
-    <Compile Include="..\PdfSearch.Redis\Database\RedisDatabaseService.cs" Link="Services\RedisDatabaseService.cs" />
+    <!--<Compile Include="..\PdfSearch.Redis\Database\RedisDatabaseService.cs" Link="Services\RedisDatabaseService.cs" />-->
   </ItemGroup>
 
   <ItemGroup>
