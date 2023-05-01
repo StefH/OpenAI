@@ -29,7 +29,7 @@ internal static class Program
             })
             .Build();
 
-        host.Services.UseOpenAIWithPolly();
+        // host.Services.UseOpenAIWithPolly();
 
         var service = host.Services.GetRequiredService<IMainService>();
 
@@ -79,8 +79,8 @@ internal static class Program
             "What are fractals?",
             "What is data science?",
             "What are examples of good data science teams?",
-            "What is the advice state of data maturity?",
-            "What is the collect state of data maturity?"
+            "What is the advice stage of data maturity?",
+            "What is the collect stage of data maturity?"
         };
 
         foreach (var question in questions)
