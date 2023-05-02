@@ -45,7 +45,7 @@ internal class DocumentSplitter : IDocumentSplitter
                 if (trimmedLine.Length >= MaxCharactersPerTextFragment - 1)
                 {
                     var extraLines = LineSplitRegex
-                        .Split(line) // Split the line using the Regex.
+                        .Split(trimmedLine) // Split the line using the Regex.
                         .Where(extraLine => !string.IsNullOrWhiteSpace(extraLine)) // Remove empty lines.
                         .Select(extraLine => extraLine.Trim()) // Trim the line.
                         .ToArray();
