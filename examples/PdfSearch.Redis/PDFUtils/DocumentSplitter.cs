@@ -10,26 +10,26 @@ internal class DocumentSplitter : IDocumentSplitter
     private const char Dot = '.';
     private const char Space = ' ';
     private static readonly char[] SplitChars = { Dot, '\r', '\n' };
-    private static readonly Regex LineSplitRegex = new ($"(.{{1,{MaxCharactersPerTextFragment}}}(?=\\s|$))", RegexOptions.Compiled);
+    private static readonly Regex LineSplitRegex = new($"(.{{1,{MaxCharactersPerTextFragment}}}(?=\\s|$))", RegexOptions.Compiled);
 
-public IReadOnlyList<string> Split(string filePath)
-{
-    var stringBuilder = new StringBuilder();
-
-    using (var document = PdfDocument.Open(filePath))
+    public IReadOnlyList<string> Split(string filePath)
     {
-        foreach (var page in document.GetPages().Where(p => !string.IsNullOrWhiteSpace(p.Text)))
+        var stringBuilder = new StringBuilder();
+
+        using (var document = PdfDocument.Open(filePath))
         {
-            stringBuilder.Append(page.Text.Trim());
+            foreach (var page in document.GetPages().Where(p => !string.IsNullOrWhiteSpace(p.Text)))
+            {
+                stringBuilder.Append(page.Text.Trim());
+            }
         }
+
+        var lines = SplitToLines(stringBuilder);
+
+        return GetTextFragments(lines)
+            .Where(line => !string.IsNullOrWhiteSpace(line))
+            .ToArray();
     }
-
-    var lines = SplitToLines(stringBuilder);
-
-    return GetTextFragments(lines)
-        .Where(line => !string.IsNullOrWhiteSpace(line))
-        .ToArray();
-}
 
     private static string[] SplitToLines(StringBuilder stringBuilder)
     {
@@ -85,7 +85,7 @@ public IReadOnlyList<string> Split(string filePath)
                 stringBuilder.Append(Space);
             }
         }
-        
+
         return textFragments;
     }
 }
