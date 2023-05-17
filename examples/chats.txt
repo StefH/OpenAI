@@ -1,0 +1,20 @@
+When given this request: "Read a text file `c:\temp\test.txt` and count the number of words starting with `e`":
+
+List all the actions in a table with multiple columns: 
+- `Id` column.
+
+- `Action to perform` column.
+
+- `Can Do` column which has a value true or false indicating if you can do it or not.
+
+- `Info` column which describes why you can or cannot do this action.
+
+- `Input Values` column which defines the input values for the method defined in the `Code` column.
+  The request should be analyzed and these values should be extracted from the request.
+
+- `Input Parameters` column which defines the input parameters for the method defined in the `Code` column. If not possible, then write `null`.
+
+- `Code` column which shows the most efficient C# code in a method named "Method{Id}" to perform this step. 
+  Where `{Id}` is the id from the column. 
+  And the method should use the parameter(s) defined in the`Parameters` column.
+  If it's not possible to write the code using C# code, write `null`.
