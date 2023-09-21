@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSearch.Sqlite", "example
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSearch.MauiApp", "examples\PdfSearch.MauiApp\PdfSearch.MauiApp.csproj", "{4DE34480-54F6-438A-805F-8AC18FD8F836}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSnippets", "examples\CodeSnippets\CodeSnippets.csproj", "{59F3EEBC-F32A-407D-AFCC-77F736056B12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{4DE34480-54F6-438A-805F-8AC18FD8F836}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE34480-54F6-438A-805F-8AC18FD8F836}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4DE34480-54F6-438A-805F-8AC18FD8F836}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{59F3EEBC-F32A-407D-AFCC-77F736056B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F3EEBC-F32A-407D-AFCC-77F736056B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F3EEBC-F32A-407D-AFCC-77F736056B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F3EEBC-F32A-407D-AFCC-77F736056B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{9355A13F-AD1E-4ABC-8D75-72054B993AB0} = {C7979547-CE62-4867-9193-515930DAB839}
 		{E72D6E0E-CDD8-4AB7-BB6D-25E365A3C573} = {C7979547-CE62-4867-9193-515930DAB839}
 		{4DE34480-54F6-438A-805F-8AC18FD8F836} = {C7979547-CE62-4867-9193-515930DAB839}
+		{59F3EEBC-F32A-407D-AFCC-77F736056B12} = {C7979547-CE62-4867-9193-515930DAB839}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7B3F524-4422-4188-9E39-03C5A698219E}
