@@ -41,7 +41,7 @@ internal class MainService : IMainService
         Console.WriteLine("Q: {0}", question);
         Console.Write("A: ");
 
-        var moderation = await _openAiAPI.Moderation.WithRetry(moderation => moderation.CallModerationAsync(question));
+        var moderation = await _openAiAPI.Moderation.CallModerationAsync(question);
         if (moderation.Results.Any(r => r.Flagged))
         {
             Console.WriteLine("Sorry, that question is not allowed.");
@@ -106,6 +106,8 @@ internal class MainService : IMainService
                 break;
             }
         }
+
+        _logger.LogInformation("Creating a conversation based on the text fragments and waiting for the answer...");
 
         // Here is where the 'magic' happens
         var contentBuilder = new StringBuilder();

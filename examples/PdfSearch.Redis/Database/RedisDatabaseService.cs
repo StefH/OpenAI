@@ -59,7 +59,7 @@ internal class RedisDatabaseService : IRedisDatabaseService
 
     public async Task<IReadOnlyList<VectorDocument>> SearchAsync(string indexName, byte[] vectorAsBytes)
     {
-        _logger.LogInformation("Doing a search for index {index}", indexName);
+        _logger.LogInformation("Doing a search for index {index} ...", indexName);
 
         var query = new Query("*=>[KNN 5 @embedding $vectorAsBytes AS vector_score]")
             .AddParam("vectorAsBytes", vectorAsBytes)

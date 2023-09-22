@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenAI_API;
-using OpenAI_API.Polly.DependencyInjection;
 using PdfSearch.Redis.Database;
 using PdfSearch.Redis.PDFUtils;
 using StackExchange.Redis;
@@ -16,7 +15,11 @@ internal static class Program
         using var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices(services =>
             {
-                services.AddSingleton<IOpenAIAPI>(_ => new OpenAIAPI(new APIAuthentication(Environment.GetEnvironmentVariable("OpenAIAPI_Key"), Environment.GetEnvironmentVariable("OpenAIAPI_Org"))));
+                services.AddSingleton<IOpenAIAPI>(_ =>
+                {
+                    var authentication = new APIAuthentication(Environment.GetEnvironmentVariable("OpenAIAPI_Key"), Environment.GetEnvironmentVariable("OpenAIAPI_Org"));
+                    return new OpenAIAPI(authentication);
+                });
                 services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(new ConfigurationOptions { EndPoints = { "localhost:6380" } }));
                 services.AddSingleton<IRedisDatabaseService, RedisDatabaseService>();
                 services.AddSingleton<IDocumentSplitter, DocumentSplitter>();
@@ -28,8 +31,6 @@ internal static class Program
                 logging.AddConsole();
             })
             .Build();
-
-        // host.Services.UseOpenAIWithPolly();
 
         var service = host.Services.GetRequiredService<IMainService>();
 

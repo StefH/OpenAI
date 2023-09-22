@@ -36,3 +36,12 @@ Unhandled exception. System.Net.Http.HttpRequestException: Error at chat/complet
     "code": null
   }
 }
+
+System.Net.Http.HttpRequestException: 'Error at moderations (https://api.openai.com/v1/moderations) with HTTP status code: TooManyRequests. Content: {
+  "error": {
+    "message": "You exceeded your current quota, please check your plan and billing details.",
+    "type": "insufficient_quota",
+    "param": null,
+    "code": "insufficient_quota"
+  }
+}'
