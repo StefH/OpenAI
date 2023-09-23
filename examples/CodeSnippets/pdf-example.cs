@@ -5,6 +5,7 @@ namespace CodeSnippets;
 
 internal class PdfExample
 {
+
 public IReadOnlyList<string> Split(string filePath)
 {
     var stringBuilder = new StringBuilder();
@@ -33,4 +34,5 @@ private string[] SplitToLines(StringBuilder stringBuilder)
 {
     throw new NotImplementedException();
 }
+
 }

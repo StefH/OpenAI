@@ -19,34 +19,34 @@ static async Task Main(string[] args)
     // -----------------------------------------------------------------------------------------------------------------------
 
 
-    // Call the Chat API to do a moderation on a text
-    ModerationResult moderation = await api.Moderation.CallModerationAsync("My question");
-    if (moderation.Results.Any(r => r.Flagged))
-    {
-        Console.WriteLine("Sorry, that question is not allowed.");
-    }
+// Call the Chat API to do a moderation on a text
+ModerationResult moderation = await api.Moderation.CallModerationAsync("My question");
+if (moderation.Results.Any(r => r.Flagged))
+{
+    Console.WriteLine("Sorry, that question is not allowed.");
+}
 
 
     // -----------------------------------------------------------------------------------------------------------------------
 
 
-    // Call the Chat API to create an conversation
-    Conversation chat = api.Chat.CreateConversation();
+// Call the Chat API to create an conversation
+Conversation chat = api.Chat.CreateConversation();
 
-    // Add user input
-    chat.AppendUserInput("Describe ChatGPT in 10 words");
+// Add user input
+chat.AppendUserInput("Describe ChatGPT in 10 words");
 
-    // Get the response
-    string response = await chat.GetResponseFromChatbotAsync();
+// Get the response
+string response = await chat.GetResponseFromChatbotAsync();
 
 
     // -----------------------------------------------------------------------------------------------------------------------
 
 
-    // Call the API to embed text using the default embedding model
-    float[] embeddings1 = await api.Embeddings.GetEmbeddingsAsync("Hello World");
-    
+// Call the API to embed text using the default embedding model
+float[] embeddings1 = await api.Embeddings.GetEmbeddingsAsync("Hello World");
 
-    // Call the API to embed text using the default embedding model using "Retry" to handle rate limiting
-    float[] embeddings2 = await api.Embeddings.WithRetry(embeddings => embeddings.GetEmbeddingsAsync("Hello World"));
+
+// Call the API to embed text using the default embedding model using "Retry" to handle rate limiting
+float[] embeddings2 = await api.Embeddings.WithRetry(embeddings => embeddings.GetEmbeddingsAsync("Hello World"));
 }
