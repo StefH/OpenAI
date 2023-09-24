@@ -52,10 +52,8 @@ internal class MainService : IMainService
         var questionAsVector = await _openAiAPI.Embeddings.WithRetry(api => api.GetEmbeddingsAsync(question));
         var questionAsBytes = MemoryMarshal.Cast<float, byte>(questionAsVector).ToArray();
 
-        var canUseGpt4 = await CanUseGPT4Async() && false;
-
+        var canUseGpt4 = await CanUseGPT4Async();
         
-
         var prefix = Path.GetFileNameWithoutExtension(filePath);
         var indexName = $"{prefix}-index";
 

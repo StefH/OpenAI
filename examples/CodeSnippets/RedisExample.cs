@@ -135,8 +135,10 @@ static async Task SearchForCosineSimilarityAndGetResponseFromChatGPTAsync(IDatab
     string indexName = "field-guide-to-data-science-index";
     string question = "What are fractals?";
     byte[] questionAsVector = await ConvertTheQuestionToAVectorAsync(api, question);
-    var query = BuildQuery(questionAsVector);
-    var vectorDocuments = await SearchAsync(database, indexName, query); // 5 VectorDocuments are returned here
+    Query query = BuildQuery(questionAsVector);
+
+    // 5 VectorDocuments are returned
+    IReadOnlyList<VectorDocument> vectorDocuments = await SearchAsync(database, indexName, query);
 
     // Just concatenate all text-fragments from the found documents.
     var textBuilder = new StringBuilder();
