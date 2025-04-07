@@ -33,3 +33,6 @@ serviceProvider.UseOpenAIWithPolly();
 ```
 
 Note that these exceptions are logged as `Debug` level.
+
+## :books:
+See also https://mstack.nl/blogs/20230623-chatgpt-question-pdf-document/
